@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "63394783054",
+    "project_id": "appforklore",
+    "storage_bucket": "appforklore.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:63394783054:android:a87769484f420e88ed081f",
+        "android_client_info": {
+          "package_name": "com.example.forklore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvu5EqpbxYNiQ12TMHvR0O7TQGO7y6k-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

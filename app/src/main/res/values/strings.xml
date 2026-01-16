@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ForkLore</string>
+    <string name="feed">Feed</string>
+    <string name="discover">Discover</string>
+    <string name="my_recipes">My Recipes</string>
+    <string name="profile">Profile</string>
+</resources>
