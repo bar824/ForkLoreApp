@@ -38,6 +38,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -83,6 +84,7 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.storage.ktx)
     implementation(libs.firebase.appcheck.playintegrity)
+    debugImplementation("com.google.firebase:firebase-appcheck-debug:17.0.1")
 
     // Glide
     implementation(libs.glide)

@@ -11,6 +11,8 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
+import com.example.forklore.BuildConfig
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,9 +26,16 @@ class MainActivity : AppCompatActivity() {
 
         FirebaseApp.initializeApp(this)
         val firebaseAppCheck = FirebaseAppCheck.getInstance()
-        firebaseAppCheck.installAppCheckProviderFactory(
-            PlayIntegrityAppCheckProviderFactory.getInstance()
-        )
+
+        if (BuildConfig.DEBUG) {
+            firebaseAppCheck.installAppCheckProviderFactory(
+                DebugAppCheckProviderFactory.getInstance()
+            )
+        } else {
+            firebaseAppCheck.installAppCheckProviderFactory(
+                PlayIntegrityAppCheckProviderFactory.getInstance()
+            )
+        }
 
         firebaseAuth = FirebaseAuth.getInstance()
 
@@ -36,23 +45,18 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            // NOTE: The destination IDs (e.g., R.id.loginFragment) are assumed. 
-            // Please replace them with the actual IDs from your navigation graph.
             when (destination.id) {
-                //Destinations where the bottom navigation should be hidden
                 R.id.splashFragment,
                 R.id.loginFragment,
                 R.id.registerFragment,
                 R.id.postDetailsFragment -> {
                     binding.bottomNavigation.visibility = View.GONE
                 }
-                //Destinations where the bottom navigation should be visible
                 R.id.myRecipesFragment,
                 R.id.feedFragment,
                 R.id.discoverFragment,
                 R.id.profileFragment -> {
                     if (firebaseAuth.currentUser == null) {
-                        // If user is not logged in, redirect to login and hide bottom navigation
                         navController.navigate(R.id.loginFragment)
                         binding.bottomNavigation.visibility = View.GONE
                     } else {
@@ -60,7 +64,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 else -> {
-                    // Default to hiding the navigation for any other fragments
                     binding.bottomNavigation.visibility = View.GONE
                 }
             }
