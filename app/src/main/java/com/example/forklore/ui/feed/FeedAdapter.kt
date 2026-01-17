@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.forklore.data.model.Post
 import com.example.forklore.databinding.ItemPostBinding
+import java.io.File
 
 class FeedAdapter(private val onPostClicked: (Post) -> Unit) : ListAdapter<Post, FeedAdapter.PostViewHolder>(PostDiffCallback()) {
 
@@ -27,7 +28,11 @@ class FeedAdapter(private val onPostClicked: (Post) -> Unit) : ListAdapter<Post,
         fun bind(post: Post) {
             binding.postTitle.text = post.title
             binding.postAuthor.text = post.ownerName
-            Glide.with(binding.root.context).load(post.imageUrl).into(binding.postImage)
+            if (post.localImagePath != null) {
+                Glide.with(binding.root.context).load(File(post.localImagePath!!)).into(binding.postImage)
+            } else {
+                Glide.with(binding.root.context).load(post.imageUrl).into(binding.postImage)
+            }
         }
     }
 }

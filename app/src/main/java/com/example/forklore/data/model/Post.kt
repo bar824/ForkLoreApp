@@ -1,4 +1,3 @@
-
 package com.example.forklore.data.model
 
 import androidx.room.Entity
@@ -15,6 +14,7 @@ data class Post(
     val ingredients: String = "",
     val steps: String = "",
     val imageUrl: String? = null,
+    var localImagePath: String? = null,
     val tags: List<String> = emptyList(),
     val likesCount: Long = 0,
     val commentsCount: Long = 0,

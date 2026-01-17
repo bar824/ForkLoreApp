@@ -6,14 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.forklore.databinding.FragmentMyRecipesBinding
+import com.example.forklore.ui.BaseAuthFragment
 import com.example.forklore.utils.Resource
 
-class MyRecipesFragment : Fragment() {
+class MyRecipesFragment : BaseAuthFragment() {
 
     private var _binding: FragmentMyRecipesBinding? = null
     private val binding get() = _binding!!

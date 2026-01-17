@@ -9,17 +9,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.children
-import androidx.fragment.app.Fragment
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.forklore.data.model.Post
 import com.example.forklore.databinding.FragmentPostEditorBinding
+import com.example.forklore.ui.BaseAuthFragment
 import com.example.forklore.utils.Resource
 import com.google.android.material.chip.Chip
 
-class PostEditorFragment : Fragment() {
+class PostEditorFragment : BaseAuthFragment() {
 
     private var _binding: FragmentPostEditorBinding? = null
     private val binding get() = _binding!!
@@ -56,22 +57,28 @@ class PostEditorFragment : Fragment() {
             pickImage.launch("image/*")
         }
 
+        binding.addTagButton.setOnClickListener {
+            addTag()
+        }
+
         binding.saveButton.setOnClickListener {
-            savePost()
+            if (validateInput()) {
+                savePost()
+            }
         }
 
         viewModel.post.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
-                    binding.progressIndicator.visibility = View.VISIBLE
+                    binding.progressIndicator.isVisible = true
                 }
                 is Resource.Success -> {
-                    binding.progressIndicator.visibility = View.GONE
+                    binding.progressIndicator.isVisible = false
                     currentPost = resource.data
                     populateFields()
                 }
                 is Resource.Error -> {
-                    binding.progressIndicator.visibility = View.GONE
+                    binding.progressIndicator.isVisible = false
                     Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -80,15 +87,15 @@ class PostEditorFragment : Fragment() {
         viewModel.saveStatus.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
-                    binding.progressIndicator.visibility = View.VISIBLE
+                    binding.progressIndicator.isVisible = true
                 }
                 is Resource.Success -> {
-                    binding.progressIndicator.visibility = View.GONE
+                    binding.progressIndicator.isVisible = false
                     Toast.makeText(requireContext(), "Post saved", Toast.LENGTH_SHORT).show()
                     findNavController().popBackStack()
                 }
                 is Resource.Error -> {
-                    binding.progressIndicator.visibility = View.GONE
+                    binding.progressIndicator.isVisible = false
                     Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -104,12 +111,62 @@ class PostEditorFragment : Fragment() {
             it.imageUrl?.let {
                 Glide.with(this).load(it).into(binding.postImage)
             }
+            binding.tagsChipGroup.removeAllViews()
             it.tags.forEach { tag ->
-                val chip = Chip(requireContext())
-                chip.text = tag
-                binding.tagsChipGroup.addView(chip)
+                addChipToGroup(tag)
             }
         }
+    }
+
+    private fun addTag() {
+        val tagText = binding.tagEditText.text.toString().trim()
+        if (tagText.isNotBlank()) {
+            addChipToGroup(tagText)
+            binding.tagEditText.text?.clear()
+        }
+    }
+
+    private fun addChipToGroup(tag: String) {
+        val chip = Chip(requireContext()).apply {
+            text = tag
+            isCloseIconVisible = true
+            setOnCloseIconClickListener { binding.tagsChipGroup.removeView(it) }
+        }
+        binding.tagsChipGroup.addView(chip)
+    }
+
+    private fun validateInput(): Boolean {
+        var isValid = true
+
+        if (binding.titleEditText.text.toString().trim().isEmpty()) {
+            binding.titleLayout.error = "Title is required"
+            isValid = false
+        } else {
+            binding.titleLayout.error = null
+        }
+
+        if (binding.storyEditText.text.toString().trim().isEmpty()) {
+            binding.storyLayout.error = "Story is required"
+            isValid = false
+        } else {
+            binding.storyLayout.error = null
+        }
+
+        if (binding.ingredientsEditText.text.toString().trim().isEmpty()) {
+            binding.ingredientsLayout.error = "Ingredients are required"
+            isValid = false
+        } else {
+            binding.ingredientsLayout.error = null
+        }
+
+        if (binding.stepsEditText.text.toString().trim().isEmpty()) {
+            binding.stepsLayout.error = "Steps are required"
+            isValid = false
+        } else {
+            binding.stepsLayout.error = null
+        }
+
+        return isValid
     }
 
     private fun savePost() {

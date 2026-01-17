@@ -6,11 +6,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.forklore.data.model.ExternalRecipe
 import com.example.forklore.data.model.Post
 import com.example.forklore.data.model.Recipe
 
-@Database(entities = [Post::class, ExternalRecipe::class, Recipe::class], version = 3)
+@Database(entities = [Post::class, ExternalRecipe::class, Recipe::class], version = 4)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -22,6 +24,12 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
+        private val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE posts_cache ADD COLUMN localImagePath TEXT")
+            }
+        }
+
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -29,7 +37,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "forklore_database"
                 )
-                .fallbackToDestructiveMigration()
+                .addMigrations(MIGRATION_3_4)
                 .build()
                 INSTANCE = instance
                 instance

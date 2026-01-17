@@ -79,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top"
-                android:hint="Ingredients (comma-separated)"
+                android:hint="Ingredients"
                 android:minLines="3" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,9 +97,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top"
-                android:hint="Steps (one per line)"
+                android:hint="Steps"
                 android:minLines="5" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tag_input_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toStartOf="@+id/add_tag_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/steps_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tag_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Add a tag" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/add_tag_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Tag"
+            app:layout_constraintBottom_toBottomOf="@+id/tag_input_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tag_input_layout" />
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/tags_chip_group"
@@ -108,7 +133,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/steps_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/tag_input_layout" />
 
         <Button
             android:id="@+id/save_button"
@@ -125,6 +150,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

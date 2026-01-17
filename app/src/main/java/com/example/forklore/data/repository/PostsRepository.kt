@@ -7,6 +7,7 @@ import com.example.forklore.data.local.DbProvider
 import com.example.forklore.data.model.Post
 import com.example.forklore.utils.Resource
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
@@ -20,18 +21,31 @@ class PostsRepository(context: Context) {
     private val storage = FirebaseStorage.getInstance()
     private val postsDao = DbProvider.getDb(context).postsDao()
 
-    suspend fun getPosts(): Resource<List<Post>> {
-        return try {
-            val remotePosts = db.collection("posts")
-                .orderBy("createdAt", Query.Direction.DESCENDING)
-                .get()
-                .await()
-                .toObjects(Post::class.java)
+    suspend fun getInitialPosts(): Resource<List<Post>> {
+        return getPosts(null)
+    }
 
-            postsDao.deleteAllPosts()
+    suspend fun getPosts(lastVisible: DocumentSnapshot?): Resource<List<Post>> {
+        return try {
+            var query = db.collection("posts")
+                .orderBy("createdAt", Query.Direction.DESCENDING)
+                .limit(10)
+
+            if (lastVisible != null) {
+                query = query.startAfter(lastVisible)
+            }
+
+            val snapshot = query.get().await()
+            val remotePosts = snapshot.toObjects(Post::class.java)
+
+            if (lastVisible == null) {
+                postsDao.deleteAllPosts()
+            }
             postsDao.insertPosts(remotePosts)
 
-            Resource.Success(remotePosts)
+            val newLastVisible = if (snapshot.documents.isNotEmpty()) snapshot.documents.last() else null
+
+            Resource.Success(postsDao.getPosts(), newLastVisible)
         } catch (e: Exception) {
             try {
                 val localPosts = postsDao.getPosts()

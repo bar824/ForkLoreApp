@@ -18,4 +18,7 @@ interface PostsDao {
 
     @Query("DELETE FROM posts_cache")
     suspend fun deleteAllPosts()
+
+    @Query("UPDATE posts_cache SET localImagePath = :localImagePath WHERE id = :postId")
+    suspend fun updateLocalImagePath(postId: String, localImagePath: String)
 }

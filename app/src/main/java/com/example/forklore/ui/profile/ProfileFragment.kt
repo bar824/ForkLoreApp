@@ -8,15 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.forklore.R
 import com.example.forklore.databinding.FragmentProfileBinding
+import com.example.forklore.ui.BaseAuthFragment
 import com.example.forklore.utils.Resource
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : BaseAuthFragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!

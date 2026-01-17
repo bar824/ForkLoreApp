@@ -7,14 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.forklore.databinding.FragmentDiscoverBinding
+import com.example.forklore.ui.BaseAuthFragment
 import com.example.forklore.utils.Resource
 
-class DiscoverFragment : Fragment() {
+class DiscoverFragment : BaseAuthFragment() {
 
     private var _binding: FragmentDiscoverBinding? = null
     private val binding get() = _binding!!
