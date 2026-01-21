@@ -79,12 +79,13 @@ dependencies {
     implementation(libs.coroutines.play.services)
 
     // Firebase
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth.ktx)
-    implementation(libs.firebase.firestore.ktx)
-    implementation(libs.firebase.storage.ktx)
+    implementation(platform("com.google.firebase:firebase-bom:34.8.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-storage")
     implementation(libs.firebase.appcheck.playintegrity)
     debugImplementation("com.google.firebase:firebase-appcheck-debug:17.0.1")
+    implementation("com.google.firebase:firebase-analytics")
 
     // Glide
     implementation(libs.glide)

@@ -1,16 +1,17 @@
 package com.example.forklore
 
-import android.app.Application
+import android.content.Context
 import com.google.firebase.FirebaseApp
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 
-class ForkLoreApplication : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        FirebaseApp.initializeApp(this)
+object FirebaseInitializer {
+
+    fun initialize(context: Context) {
+        FirebaseApp.initializeApp(context)
         val firebaseAppCheck = FirebaseAppCheck.getInstance()
+
         if (BuildConfig.DEBUG) {
             firebaseAppCheck.installAppCheckProviderFactory(
                 DebugAppCheckProviderFactory.getInstance()
