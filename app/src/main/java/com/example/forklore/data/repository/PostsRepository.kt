@@ -1,15 +1,13 @@
-
 package com.example.forklore.data.repository
 
 import android.content.Context
 import android.net.Uri
 import com.example.forklore.data.local.DbProvider
+import com.example.forklore.data.mockPosts
 import com.example.forklore.data.model.Post
 import com.example.forklore.utils.Resource
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
@@ -20,44 +18,16 @@ class PostsRepository(context: Context) {
     private val auth = FirebaseAuth.getInstance()
     private val storage = FirebaseStorage.getInstance()
     private val postsDao = DbProvider.getDb(context).postsDao()
+    private val pageSize = 6 // Increased page size
 
     suspend fun getInitialPosts(): Resource<List<Post>> {
-        return getPosts(null)
+        return Resource.Success(mockPosts.take(pageSize))
     }
 
-    suspend fun getPosts(lastVisible: DocumentSnapshot?): Resource<List<Post>> {
-        return try {
-            var query = db.collection("posts")
-                .orderBy("createdAt", Query.Direction.DESCENDING)
-                .limit(10)
-
-            if (lastVisible != null) {
-                query = query.startAfter(lastVisible)
-            }
-
-            val snapshot = query.get().await()
-            val remotePosts = snapshot.toObjects(Post::class.java)
-
-            if (lastVisible == null) {
-                postsDao.deleteAllPosts()
-            }
-            postsDao.insertPosts(remotePosts)
-
-            val newLastVisible = if (snapshot.documents.isNotEmpty()) snapshot.documents.last() else null
-
-            Resource.Success(postsDao.getPosts(), newLastVisible)
-        } catch (e: Exception) {
-            try {
-                val localPosts = postsDao.getPosts()
-                if (localPosts.isNotEmpty()) {
-                    Resource.Success(localPosts)
-                } else {
-                    Resource.Error(e.message ?: "An error occurred and no cached data is available.")
-                }
-            } catch (dbException: Exception) {
-                Resource.Error(dbException.message ?: "An error occurred while fetching from the database.")
-            }
-        }
+    suspend fun getPosts(page: Int): Resource<List<Post>> {
+        val offset = page * pageSize
+        val newPosts = mockPosts.drop(offset).take(pageSize)
+        return Resource.Success(newPosts)
     }
 
     suspend fun getMyPosts(): Resource<List<Post>> {
@@ -65,7 +35,7 @@ class PostsRepository(context: Context) {
             val userId = auth.currentUser?.uid ?: return Resource.Error("User not logged in")
             val remotePosts = db.collection("posts")
                 .whereEqualTo("ownerId", userId)
-                .orderBy("createdAt", Query.Direction.DESCENDING)
+                .orderBy("createdAt", com.google.firebase.firestore.Query.Direction.DESCENDING)
                 .get()
                 .await()
                 .toObjects(Post::class.java)
@@ -76,15 +46,12 @@ class PostsRepository(context: Context) {
     }
 
     suspend fun getPost(postId: String): Resource<Post> {
-        return try {
-            val post = db.collection("posts").document(postId).get().await().toObject(Post::class.java)
-            if (post != null) {
-                Resource.Success(post)
-            } else {
-                Resource.Error("Post not found")
-            }
-        } catch (e: Exception) {
-            Resource.Error(e.message ?: "An error occurred")
+        // Find the post in the mock list or fall back to an error
+        val post = mockPosts.find { it.id == postId }
+        return if (post != null) {
+            Resource.Success(post)
+        } else {
+            Resource.Error("Post not found")
         }
     }
 

@@ -5,6 +5,10 @@
         android:icon="@drawable/ic_feed"
         android:title="@string/feed" />
     <item
+        android:id="@id/searchFragment"
+        android:icon="@drawable/ic_search"
+        android:title="@string/search" />
+    <item
         android:id="@id/discoverFragment"
         android:icon="@drawable/ic_discover"
         android:title="@string/discover" />
@@ -13,7 +17,7 @@
         android:icon="@drawable/ic_my_recipes"
         android:title="@string/my_recipes" />
     <item
-        android:id="@+id/profileFragment"
+        android:id="@id/profileFragment"
         android:icon="@drawable/ic_profile"
         android:title="@string/profile" />
 </menu>

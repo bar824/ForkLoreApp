@@ -1,4 +1,3 @@
-
 package com.example.forklore.ui.post
 
 import android.os.Bundle
@@ -8,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.forklore.databinding.FragmentPostDetailsBinding
@@ -34,6 +34,10 @@ class PostDetailsFragment : BaseAuthFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         viewModel.getPost(args.postId)
 

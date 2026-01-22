@@ -1,4 +1,3 @@
-
 package com.example.forklore.ui.feed
 
 import android.os.Bundle

@@ -1,4 +1,3 @@
-
 package com.example.forklore.ui.myrecipes
 
 import android.os.Bundle
@@ -43,13 +42,21 @@ class MyRecipesFragment : BaseAuthFragment() {
             when (resource) {
                 is Resource.Loading -> {
                     binding.progressIndicator.visibility = View.VISIBLE
+                    binding.textViewEmptyState.visibility = View.GONE
                 }
                 is Resource.Success -> {
                     binding.progressIndicator.visibility = View.GONE
-                    myRecipesAdapter.submitList(resource.data)
+                    if (resource.data.isNullOrEmpty()) {
+                        binding.textViewEmptyState.visibility = View.VISIBLE
+                        myRecipesAdapter.submitList(emptyList())
+                    } else {
+                        binding.textViewEmptyState.visibility = View.GONE
+                        myRecipesAdapter.submitList(resource.data)
+                    }
                 }
                 is Resource.Error -> {
                     binding.progressIndicator.visibility = View.GONE
+                    binding.textViewEmptyState.visibility = View.VISIBLE
                     Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
                 }
             }
