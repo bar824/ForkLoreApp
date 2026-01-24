@@ -67,16 +67,6 @@
         tools:layout="@layout/fragment_search" />
 
     <fragment
-        android:id="@+id/discoverFragment"
-        android:name="com.example.forklore.ui.discover.DiscoverFragment"
-        android:label="fragment_discover"
-        tools:layout="@layout/fragment_discover" >
-        <action
-            android:id="@+id/action_discoverFragment_to_externalDetailsFragment"
-            app:destination="@id/externalDetailsFragment" />
-    </fragment>
-
-    <fragment
         android:id="@+id/myRecipesFragment"
         android:name="com.example.forklore.ui.myrecipes.MyRecipesFragment"
         android:label="fragment_my_recipes"
@@ -103,7 +93,16 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.example.forklore.ui.profile.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
 
     <fragment
         android:id="@+id/postDetailsFragment"

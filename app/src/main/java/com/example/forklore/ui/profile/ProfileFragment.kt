@@ -1,36 +1,23 @@
-
 package com.example.forklore.ui.profile
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.forklore.R
 import com.example.forklore.databinding.FragmentProfileBinding
-import com.example.forklore.ui.BaseAuthFragment
-import com.example.forklore.utils.Resource
+import androidx.navigation.navGraphViewModels
 
-class ProfileFragment : BaseAuthFragment() {
+class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: ProfileViewModel by viewModels()
-
-    private var imageUri: Uri? = null
-
-    private val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let {
-            imageUri = it
-            Glide.with(this).load(it).into(binding.profileImage)
-        }
-    }
+    // Get the shared ViewModel, scoped to the navigation graph.
+    private val viewModel: ProfileViewModel by navGraphViewModels(R.id.nav_graph)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,45 +30,33 @@ class ProfileFragment : BaseAuthFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getUser()
-
-        binding.profileImage.setOnClickListener {
-            pickImage.launch("image/*")
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.logout -> {
+                    viewModel.logout()
+                    findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+                    true
+                }
+                else -> false
+            }
         }
 
-        binding.updateProfileButton.setOnClickListener {
-            val name = binding.nameEditText.text.toString().trim()
-            viewModel.updateProfile(name, imageUri)
-        }
-
-        binding.logoutButton.setOnClickListener {
-            viewModel.logout()
-            findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+        binding.btnEditProfile.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
         }
 
         viewModel.user.observe(viewLifecycleOwner) { user ->
             user?.let {
-                binding.nameEditText.setText(it.displayName)
-                it.photoUrl?.let {
-                    Glide.with(this).load(it).into(binding.profileImage)
+                binding.tvDisplayName.text = it.displayName
+                binding.tvBio.text = it.bio
+                it.photoUrl?.let { url ->
+                    Glide.with(this).load(url).into(binding.ivProfileImage)
                 }
             }
         }
 
-        viewModel.updateStatus.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    binding.progressIndicator.visibility = View.VISIBLE
-                }
-                is Resource.Success -> {
-                    binding.progressIndicator.visibility = View.GONE
-                    Toast.makeText(requireContext(), "Profile updated", Toast.LENGTH_SHORT).show()
-                }
-                is Resource.Error -> {
-                    binding.progressIndicator.visibility = View.GONE
-                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
-                }
-            }
+        viewModel.recipeCount.observe(viewLifecycleOwner) { count ->
+            binding.tvRecipeCount.text = getString(R.string.recipe_count, count)
         }
     }
 
