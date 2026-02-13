@@ -4,14 +4,17 @@
         android:id="@id/feedFragment"
         android:icon="@drawable/ic_feed"
         android:title="@string/feed" />
+
     <item
-        android:id="@id/searchFragment"
+        android:id="@id/discoverFragment"
         android:icon="@drawable/ic_search"
-        android:title="@string/search" />
+        android:title="@string/discover" />
+
     <item
         android:id="@id/myRecipesFragment"
         android:icon="@drawable/ic_my_recipes"
         android:title="@string/my_recipes" />
+
     <item
         android:id="@id/profileFragment"
         android:icon="@drawable/ic_profile"

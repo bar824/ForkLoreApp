@@ -26,7 +26,8 @@ class SearchAdapter(private val onPostClicked: (Post) -> Unit) : ListAdapter<Pos
     inner class PostViewHolder(private val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(post: Post) {
             binding.postTitle.text = post.title
-            binding.postAuthor.text = post.ownerName
+            binding.authorName.text = post.ownerName
+            binding.postStory.text = post.story
             if (post.localImagePath != null) {
                 Glide.with(binding.root.context).load(File(post.localImagePath!!)).into(binding.postImage)
             } else {

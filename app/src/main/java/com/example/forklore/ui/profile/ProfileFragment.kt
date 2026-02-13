@@ -30,7 +30,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+        binding.profileToolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.logout -> {
                     viewModel.logout()
@@ -41,22 +41,22 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        binding.btnEditProfile.setOnClickListener {
+        binding.editProfileButton.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
         }
 
         viewModel.user.observe(viewLifecycleOwner) { user ->
             user?.let {
-                binding.tvDisplayName.text = it.displayName
-                binding.tvBio.text = it.bio
+                binding.profileName.text = it.displayName
+                binding.profileEmail.text = it.email
                 it.photoUrl?.let { url ->
-                    Glide.with(this).load(url).into(binding.ivProfileImage)
+                    Glide.with(this).load(url).into(binding.profileImage)
                 }
             }
         }
 
         viewModel.recipeCount.observe(viewLifecycleOwner) { count ->
-            binding.tvRecipeCount.text = getString(R.string.recipe_count, count)
+            binding.postsCount.text = getString(R.string.recipe_count, count)
         }
     }
 

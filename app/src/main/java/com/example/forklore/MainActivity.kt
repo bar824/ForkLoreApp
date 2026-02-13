@@ -20,13 +20,13 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bottomNavigation.setupWithNavController(navController)
-
         val bottomNavVisibleDestinations = setOf(
             R.id.feedFragment,
-            R.id.searchFragment,
+            R.id.discoverFragment,
             R.id.myRecipesFragment,
             R.id.profileFragment
         )
+
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id in bottomNavVisibleDestinations) {

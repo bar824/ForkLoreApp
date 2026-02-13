@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Warm / cozy palette -->
+    <color name="color_primary">#C75B12</color>      <!-- terracotta -->
+    <color name="color_on_primary">#FFFFFF</color>
+
+    <color name="color_secondary">#1FA38A</color>    <!-- mint -->
+    <color name="color_on_secondary">#FFFFFF</color>
+
+    <color name="color_background">#FFF6EE</color>   <!-- cream -->
+    <color name="color_on_background">#1E1B16</color>
+
+    <color name="color_surface">#FFFFFF</color>
+    <color name="color_on_surface">#1E1B16</color>
+
+    <color name="color_outline">#D8CFC6</color>
 </resources>

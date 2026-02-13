@@ -19,7 +19,8 @@ import kotlinx.coroutines.tasks.await
 data class User(
     val displayName: String? = null,
     val bio: String? = null,
-    val photoUrl: String? = null
+    val photoUrl: String? = null,
+    val email: String? = null
 )
 
 // --- UI State for Edit Screen ---
@@ -93,11 +94,11 @@ class ProfileViewModel : ViewModel() {
 
                 if (snapshot != null && snapshot.exists()) {
                     val bio = snapshot.getString("bio") ?: ""
-                    val updatedUser = User(freshFirebaseUser.displayName, bio, freshFirebaseUser.photoUrl?.toString())
+                    val updatedUser = User(freshFirebaseUser.displayName, bio, freshFirebaseUser.photoUrl?.toString(), freshFirebaseUser.email)
                     originalUser = updatedUser // This line causes the "one change" bug, but it ensures data is fresh.
                     _user.postValue(updatedUser)
                 } else {
-                     val updatedUser = User(freshFirebaseUser.displayName, "", freshFirebaseUser.photoUrl?.toString())
+                     val updatedUser = User(freshFirebaseUser.displayName, "", freshFirebaseUser.photoUrl?.toString(), freshFirebaseUser.email)
                      originalUser = updatedUser
                     _user.postValue(updatedUser)
                 }
@@ -113,7 +114,7 @@ class ProfileViewModel : ViewModel() {
     }
 
     // --- LOGIC FOR EDIT PROFILE SCREEN ---
-    fun onDisplayNameChanged(newName: String) {
+    fun onDisplayNameChanged( newName: String) {
         nameHasChanged = newName != originalUser?.displayName
         updateFormChangedStatus()
     }

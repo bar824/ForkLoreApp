@@ -33,7 +33,7 @@ class PostEditorViewModel(application: Application) : AndroidViewModel(applicati
         viewModelScope.launch {
             _saveStatus.value = Resource.Loading()
             val result = if (post.id.isEmpty()) {
-                postsRepository.createPost(post, imageUri)
+                postsRepository.addPost(post, imageUri)
             } else {
                 postsRepository.updatePost(post, imageUri)
             }
