@@ -7,6 +7,7 @@ import com.example.forklore.data.local.DbProvider
 import com.example.forklore.data.model.Post
 import com.example.forklore.utils.Resource
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
@@ -90,9 +91,91 @@ class PostsRepository(context: Context) {
         }
     }
 
-    /**
-     * Post details: קודם Room (cache), אם לא קיים אז Firestore.
-     */
+    fun listenForMyPostsCount(callback: (Resource<Int>) -> Unit) {
+        val userId = auth.currentUser?.uid ?: return callback(Resource.Error("User not logged in"))
+        db.collection("posts")
+            .whereEqualTo("ownerId", userId)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    callback(Resource.Error(error.message ?: "Failed to listen for post count"))
+                    return@addSnapshotListener
+                }
+                callback(Resource.Success(snapshot?.size() ?: 0))
+            }
+    }
+
+    fun listenForSavedPostsCount(callback: (Resource<Int>) -> Unit) {
+        val userId = auth.currentUser?.uid ?: return callback(Resource.Error("User not logged in"))
+        db.collection("users").document(userId)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    callback(Resource.Error(error.message ?: "Failed to listen for saved post count"))
+                    return@addSnapshotListener
+                }
+                val savedPostIds = snapshot?.get("savedPosts") as? List<*> ?: emptyList<Any>()
+                callback(Resource.Success(savedPostIds.size))
+            }
+    }
+
+    suspend fun getSavedPosts(): Resource<List<Post>> {
+        return try {
+            val userId = auth.currentUser?.uid ?: return Resource.Error("User not logged in")
+            val userDoc = db.collection("users").document(userId).get().await()
+            val savedPostIds = userDoc.get("savedPosts") as? List<String> ?: emptyList()
+
+            if (savedPostIds.isEmpty()) {
+                return Resource.Success(emptyList())
+            }
+
+            val savedPosts = db.collection("posts")
+                .whereIn("id", savedPostIds)
+                .get()
+                .await()
+                .toObjects(Post::class.java)
+
+            Resource.Success(savedPosts)
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "Failed to load saved posts")
+        }
+    }
+
+
+    suspend fun searchPosts(query: String): Resource<List<Post>> {
+        return try {
+            val posts = db.collection("posts")
+                .whereArrayContains("searchableKeywords", query.lowercase())
+                .get()
+                .await()
+                .toObjects(Post::class.java)
+
+            Resource.Success(posts)
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "Search failed")
+        }
+    }
+
+    suspend fun savePostById(postId: String): Resource<Unit> {
+        return try {
+            val userId = auth.currentUser?.uid ?: return Resource.Error("User not logged in")
+            val userRef = db.collection("users").document(userId)
+            userRef.update("savedPosts", FieldValue.arrayUnion(postId)).await()
+            Resource.Success(Unit)
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "Failed to save post")
+        }
+    }
+
+    suspend fun unsavePostById(postId: String): Resource<Unit> {
+        return try {
+            val userId = auth.currentUser?.uid ?: return Resource.Error("User not logged in")
+            val userRef = db.collection("users").document(userId)
+            userRef.update("savedPosts", FieldValue.arrayRemove(postId)).await()
+            Resource.Success(Unit)
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "Failed to unsave post")
+        }
+    }
+
     suspend fun getPost(postId: String): Resource<Post> {
         return try {
             val cached = withContext(Dispatchers.IO) { postsDao.getPostById(postId) }
@@ -120,6 +203,13 @@ class PostsRepository(context: Context) {
         }
     }
 
+    private fun generateKeywords(title: String, tags: List<String>): List<String> {
+        val keywords = mutableListOf<String>()
+        keywords.addAll(title.lowercase().split(" "))
+        keywords.addAll(tags.map { it.lowercase() })
+        return keywords.distinct()
+    }
+
     suspend fun addPost(post: Post, imageUri: Uri?): Resource<Unit> {
         return try {
             val user = auth.currentUser ?: return Resource.Error("User not logged in")
@@ -133,13 +223,16 @@ class PostsRepository(context: Context) {
 
             val docRef = db.collection("posts").document()
 
+            val keywords = generateKeywords(post.title, post.tags)
+
             val newPost = post.copy(
                 id = docRef.id,
                 ownerId = user.uid,
                 ownerName = user.displayName ?: "Anonymous",
                 ownerPhotoUrl = user.photoUrl?.toString(),
                 imageUrl = imageUrl,
-                createdAt = System.currentTimeMillis()
+                createdAt = System.currentTimeMillis(),
+                searchableKeywords = keywords
             )
 
             docRef.set(newPost).await()
@@ -158,7 +251,9 @@ class PostsRepository(context: Context) {
                 imageUrl = imageRef.downloadUrl.await().toString()
             }
 
-            val updatedPost = post.copy(imageUrl = imageUrl)
+            val keywords = generateKeywords(post.title, post.tags)
+
+            val updatedPost = post.copy(imageUrl = imageUrl, searchableKeywords = keywords)
             db.collection("posts").document(post.id).set(updatedPost).await()
 
             // גם מעדכנים cache לוקלי

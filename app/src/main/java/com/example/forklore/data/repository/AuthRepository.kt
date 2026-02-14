@@ -2,6 +2,7 @@
 package com.example.forklore.data.repository
 
 import android.net.Uri
+import com.example.forklore.data.model.User
 import com.example.forklore.utils.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -50,7 +51,19 @@ class AuthRepository {
         auth.signOut()
     }
 
-    fun getCurrentUser() = auth.currentUser
+    fun getUser(callback: (User?) -> Unit) {
+        val firebaseUser = auth.currentUser
+        if (firebaseUser == null) {
+            callback(null)
+            return
+        }
+
+        db.collection("users").document(firebaseUser.uid)
+            .addSnapshotListener { snapshot, _ ->
+                val user = snapshot?.toObject(User::class.java)
+                callback(user)
+            }
+    }
 
     suspend fun updateProfile(name: String, imageUri: Uri?): Resource<Unit> {
         return try {

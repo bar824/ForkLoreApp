@@ -7,13 +7,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.forklore.R
 import com.example.forklore.data.model.Post
+import com.example.forklore.data.model.User
 import com.example.forklore.databinding.ItemPostBinding
 import com.google.android.material.chip.Chip
 import java.io.File
 
 class FeedAdapter(
-    private val onPostClicked: (Post) -> Unit
+    private val onPostClicked: (Post) -> Unit,
+    private val onSaveClicked: (String) -> Unit,
+    private val currentUser: User?
 ) : ListAdapter<Post, FeedAdapter.PostViewHolder>(PostDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -68,6 +72,14 @@ class FeedAdapter(
                     isCheckable = false
                 }
                 binding.tagsGroup.addView(chip)
+            }
+
+            // Save button
+            val isSaved = currentUser?.savedPosts?.contains(post.id) == true
+            val saveIcon = if (isSaved) R.drawable.ic_bookmark else R.drawable.ic_bookmark_border
+            binding.savePostButton.setImageResource(saveIcon)
+            binding.savePostButton.setOnClickListener {
+                onSaveClicked(post.id)
             }
 
             // Click

@@ -1,16 +1,21 @@
 package com.example.forklore.ui.search
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.forklore.data.model.Post
+import com.example.forklore.data.repository.PostsRepository
+import com.example.forklore.utils.Resource
+import kotlinx.coroutines.launch
 
-class SearchViewModel : ViewModel() {
+class SearchViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val postsRepository = PostsRepository(application)
 
     private val _searchResults = MutableLiveData<List<Post>>()
     val searchResults: LiveData<List<Post>> = _searchResults
-
-    private val allRecipes = createMockData()
 
     fun search(query: String) {
         if (query.isBlank()) {
@@ -18,37 +23,16 @@ class SearchViewModel : ViewModel() {
             return
         }
 
-        _searchResults.value = allRecipes.filter {
-            it.title.contains(query, ignoreCase = true) || it.story.contains(query, ignoreCase = true)
+        viewModelScope.launch {
+            when (val resource = postsRepository.searchPosts(query)) {
+                is Resource.Success -> {
+                    _searchResults.postValue(resource.data!!)
+                }
+                is Resource.Error -> {
+                    // Handle error
+                }
+                else -> {}
+            }
         }
-    }
-
-    private fun createMockData(): List<Post> {
-        return listOf(
-            Post(
-                id = "1",
-                ownerName = "Chef John",
-                title = "Spaghetti Carbonara",
-                story = "A classic Italian pasta dish.",
-                ingredients = "Spaghetti, eggs, pancetta, pecorino cheese, black pepper",
-                steps = "1. Cook spaghetti. 2. Fry pancetta. 3. Mix eggs and cheese. 4. Combine everything."
-            ),
-            Post(
-                id = "2",
-                ownerName = "Jane Doe",
-                title = "Chicken Tikka Masala",
-                story = "A popular Indian curry.",
-                ingredients = "Chicken, yogurt, tomato sauce, spices",
-                steps = "1. Marinate chicken. 2. Grill chicken. 3. Prepare curry sauce. 4. Combine and simmer."
-            ),
-            Post(
-                id = "3",
-                ownerName = "Foodie123",
-                title = "Chocolate Chip Cookies",
-                story = "The best chocolate chip cookies ever!",
-                ingredients = "Flour, butter, sugar, eggs, chocolate chips",
-                steps = "1. Cream butter and sugar. 2. Beat in eggs. 3. Stir in dry ingredients. 4. Add chocolate chips. 5. Bake."
-            )
-        )
     }
 }

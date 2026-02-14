@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.forklore.data.model.Post
+import com.example.forklore.data.model.User
+import com.example.forklore.data.repository.AuthRepository
 import com.example.forklore.data.repository.PostsRepository
 import com.example.forklore.utils.Resource
 import kotlinx.coroutines.launch
@@ -13,15 +15,26 @@ import kotlinx.coroutines.launch
 class FeedViewModel(application: Application) : AndroidViewModel(application) {
 
     private val postsRepository = PostsRepository(application)
+    private val authRepository = AuthRepository()
 
     private val _posts = MutableLiveData<Resource<List<Post>>>()
     val posts: LiveData<Resource<List<Post>>> = _posts
+
+    private val _user = MutableLiveData<User?>()
+    val user: LiveData<User?> = _user
 
     private var lastCreatedAt: Long? = null
     private var isLoading = false
 
     init {
         refresh()
+        loadUser()
+    }
+
+    private fun loadUser() {
+        authRepository.getUser { user ->
+            _user.postValue(user)
+        }
     }
 
     fun refresh() {
@@ -31,6 +44,20 @@ class FeedViewModel(application: Application) : AndroidViewModel(application) {
 
     fun loadNextPage() {
         loadPage(isRefresh = false)
+    }
+
+    fun toggleSaveStatus(postId: String) {
+        viewModelScope.launch {
+            val isCurrentlySaved = _user.value?.savedPosts?.contains(postId) == true
+            val result = if (isCurrentlySaved) {
+                postsRepository.unsavePostById(postId)
+            } else {
+                postsRepository.savePostById(postId)
+            }
+            if (result is Resource.Success) {
+                // The user listener in AuthRepository will handle the update automatically
+            }
+        }
     }
 
     private fun loadPage(isRefresh: Boolean) {

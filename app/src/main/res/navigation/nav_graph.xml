@@ -102,6 +102,9 @@
         <action
             android:id="@+id/action_profileFragment_to_myPostsFragment"
             app:destination="@id/myPostsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_savedPostsFragment"
+            app:destination="@id/savedPostsFragment" />
     </fragment>
 
     <fragment
@@ -162,6 +165,15 @@
         android:label="MyPostsFragment" >
         <action
             android:id="@+id/action_myPostsFragment_to_postDetailsFragment"
+            app:destination="@id/postDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/savedPostsFragment"
+        android:name="com.example.forklore.ui.myrecipes.SavedPostsFragment"
+        android:label="SavedPostsFragment" >
+        <action
+            android:id="@+id/action_savedPostsFragment_to_postDetailsFragment"
             app:destination="@id/postDetailsFragment" />
     </fragment>
 

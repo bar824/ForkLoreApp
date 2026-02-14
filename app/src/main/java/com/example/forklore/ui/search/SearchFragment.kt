@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +35,15 @@ class SearchFragment : BaseAuthFragment() {
 
         binding.searchEditText.addTextChangedListener {
             binding.searchButton.visibility = if (it.isNullOrBlank()) View.GONE else View.VISIBLE
+        }
+
+        binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val query = binding.searchEditText.text.toString()
+                viewModel.search(query)
+                return@setOnEditorActionListener true
+            }
+            false
         }
 
         binding.searchButton.setOnClickListener {

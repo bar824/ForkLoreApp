@@ -14,13 +14,29 @@
         android:orientation="vertical">
 
         <!-- Post image -->
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/post_image"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:contentDescription="Post image"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.TopCorners"/>
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/post_image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:contentDescription="Post image"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.TopCorners"/>
+
+            <ImageButton
+                android:id="@+id/save_post_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_margin="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_bookmark_border"
+                android:contentDescription="Save post" />
+
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

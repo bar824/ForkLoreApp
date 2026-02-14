@@ -14,6 +14,9 @@ class SplashViewModel : ViewModel() {
     val isLoggedIn: LiveData<Boolean> = _isLoggedIn
 
     fun checkUserStatus() {
-        _isLoggedIn.value = authRepository.getCurrentUser() != null
+        authRepository.getUser { user ->
+            _isLoggedIn.postValue(user != null)
+        }
     }
 }
+

@@ -49,6 +49,10 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.action_profileFragment_to_myPostsFragment)
         }
 
+        binding.savedPostsButton.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_savedPostsFragment)
+        }
+
         binding.logoutButton.setOnClickListener {
             viewModel.logout()
             findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
@@ -65,7 +69,11 @@ class ProfileFragment : Fragment() {
         }
 
         viewModel.recipeCount.observe(viewLifecycleOwner) { count ->
-            binding.postsCount.text = getString(R.string.recipe_count, count)
+            binding.postsCount.text = count.toString()
+        }
+
+        viewModel.savedRecipeCount.observe(viewLifecycleOwner) { count ->
+            binding.savedCount.text = count.toString()
         }
     }
 

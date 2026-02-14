@@ -1,27 +1,24 @@
 package com.example.forklore.ui.profile
 
+import android.app.Application
 import android.net.Uri
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.forklore.data.model.User
+import com.example.forklore.data.repository.PostsRepository
 import com.example.forklore.utils.Event
+import com.example.forklore.utils.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-
-// --- Data Class ---
-data class User(
-    val displayName: String? = null,
-    val bio: String? = null,
-    val photoUrl: String? = null,
-    val email: String? = null
-)
 
 // --- UI State for Edit Screen ---
 sealed class EditProfileUiState {
@@ -33,7 +30,7 @@ sealed class EditProfileUiState {
 /**
  * This is a SHARED ViewModel for both ProfileFragment and EditProfileFragment.
  */
-class ProfileViewModel : ViewModel() {
+class ProfileViewModel(application: Application) : AndroidViewModel(application) {
 
     private val TAG = "ProfileViewModel"
 
@@ -43,6 +40,9 @@ class ProfileViewModel : ViewModel() {
 
     private val _recipeCount = MutableLiveData<Int>()
     val recipeCount: LiveData<Int> = _recipeCount
+
+    private val _savedRecipeCount = MutableLiveData<Int>()
+    val savedRecipeCount: LiveData<Int> = _savedRecipeCount
 
     // --- LiveData for Edit Profile Screen ---
     private val _editProfileUiState = MutableLiveData<EditProfileUiState>(EditProfileUiState.Idle)
@@ -60,6 +60,7 @@ class ProfileViewModel : ViewModel() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val storage: FirebaseStorage = FirebaseStorage.getInstance()
+    private val postsRepository = PostsRepository(application)
 
     private var originalUser: User? = null
     private var nameHasChanged = false
@@ -68,7 +69,8 @@ class ProfileViewModel : ViewModel() {
 
     init {
         loadUserProfile()
-        loadRecipeCount()
+        listenForRecipeCountChanges()
+        listenForSavedRecipeCountChanges()
 
         _isSaveEnabled.addSource(_isFormChanged) { updateSaveButtonState() }
         _isSaveEnabled.addSource(_editProfileUiState) { updateSaveButtonState() }
@@ -94,7 +96,8 @@ class ProfileViewModel : ViewModel() {
 
                 if (snapshot != null && snapshot.exists()) {
                     val bio = snapshot.getString("bio") ?: ""
-                    val updatedUser = User(freshFirebaseUser.displayName, bio, freshFirebaseUser.photoUrl?.toString(), freshFirebaseUser.email)
+                    val savedPosts = snapshot.get("savedPosts") as? List<String> ?: emptyList()
+                    val updatedUser = User(freshFirebaseUser.displayName, bio, freshFirebaseUser.photoUrl?.toString(), freshFirebaseUser.email, savedPosts)
                     originalUser = updatedUser // This line causes the "one change" bug, but it ensures data is fresh.
                     _user.postValue(updatedUser)
                 } else {
@@ -105,8 +108,20 @@ class ProfileViewModel : ViewModel() {
             }
     }
 
-    private fun loadRecipeCount() {
-        _recipeCount.postValue(0) // Placeholder
+    private fun listenForRecipeCountChanges() {
+        postsRepository.listenForMyPostsCount { resource ->
+            if (resource is Resource.Success) {
+                _recipeCount.postValue(resource.data!!)
+            }
+        }
+    }
+
+    private fun listenForSavedRecipeCountChanges() {
+        postsRepository.listenForSavedPostsCount { resource ->
+            if (resource is Resource.Success) {
+                _savedRecipeCount.postValue(resource.data!!)
+            }
+        }
     }
 
     fun logout() {
