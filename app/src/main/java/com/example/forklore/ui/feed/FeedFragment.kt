@@ -35,6 +35,10 @@ class FeedFragment : BaseAuthFragment() {
 
         setupRecyclerView()
 
+        binding.fabAddPost.setOnClickListener {
+            val action = FeedFragmentDirections.actionFeedFragmentToPostEditorFragment(null)
+            findNavController().navigate(action)
+        }
 
         viewModel.posts.observe(viewLifecycleOwner) { resource ->
             when (resource) {

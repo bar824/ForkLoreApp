@@ -45,6 +45,15 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
         }
 
+        binding.myPostsButton.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_myPostsFragment)
+        }
+
+        binding.logoutButton.setOnClickListener {
+            viewModel.logout()
+            findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+        }
+
         viewModel.user.observe(viewLifecycleOwner) { user ->
             user?.let {
                 binding.profileName.text = it.displayName

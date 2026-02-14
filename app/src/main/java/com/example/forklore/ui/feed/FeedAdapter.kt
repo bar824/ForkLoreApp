@@ -35,41 +35,34 @@ class FeedAdapter(
             // Author
             binding.authorName.text = post.ownerName?.takeIf { it.isNotBlank() } ?: "Anonymous"
 
-            // Story preview
+            // Story preview (if exists in Post model)
             binding.postStory.text = post.story?.takeIf { it.isNotBlank() } ?: ""
 
-            // Time
+            // Time (if you have createdAt in Post)
+            // If your Post.createdAt is Long:
             val createdAt = post.createdAt
-            binding.postTime.text = if (createdAt > 0L) {
+            binding.postTime.text = if (createdAt > 0) {
                 DateUtils.getRelativeTimeSpanString(createdAt).toString()
             } else {
                 ""
             }
 
             // Image (local cache first)
-            val ctx = binding.root.context
             val localPath = post.localImagePath
-            val remoteUrl = post.imageUrl
-
-            val request = Glide.with(ctx)
-                .load(
-                    when {
-                        !localPath.isNullOrBlank() -> File(localPath)
-                        !remoteUrl.isNullOrBlank() -> remoteUrl
-                        else -> null
-                    }
-                )
-                // כדי שלא יהיה "מסך ריק" בזמן טעינה
-                .placeholder(android.R.drawable.ic_menu_report_image)
-                .error(android.R.drawable.ic_menu_close_clear_cancel)
-
-            request.into(binding.postImage)
+            if (!localPath.isNullOrBlank()) {
+                Glide.with(binding.root.context)
+                    .load(File(localPath))
+                    .into(binding.postImage)
+            } else {
+                Glide.with(binding.root.context)
+                    .load(post.imageUrl)
+                    .into(binding.postImage)
+            }
 
             // Tags -> Chips
             binding.tagsGroup.removeAllViews()
-            val tags = post.tags.orEmpty().take(4)
-            tags.forEach { tag ->
-                val chip = Chip(ctx).apply {
+            post.tags?.take(4)?.forEach { tag ->
+                val chip = Chip(binding.root.context).apply {
                     text = "#$tag"
                     isClickable = false
                     isCheckable = false

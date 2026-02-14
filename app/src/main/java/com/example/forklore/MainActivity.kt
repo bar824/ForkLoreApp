@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         val bottomNavVisibleDestinations = setOf(
             R.id.feedFragment,
             R.id.discoverFragment,
-            R.id.myRecipesFragment,
+            R.id.myPostsFragment, // Corrected from myRecipesFragment
             R.id.profileFragment
         )
 

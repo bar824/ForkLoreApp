@@ -14,6 +14,7 @@ import com.example.forklore.databinding.FragmentPostDetailsBinding
 import com.example.forklore.ui.BaseAuthFragment
 import com.example.forklore.utils.Resource
 import com.google.android.material.chip.Chip
+import com.google.firebase.auth.FirebaseAuth
 import java.io.File
 
 class PostDetailsFragment : BaseAuthFragment() {
@@ -66,6 +67,17 @@ class PostDetailsFragment : BaseAuthFragment() {
                             val chip = Chip(requireContext())
                             chip.text = tag
                             binding.tagsChipGroup.addView(chip)
+                        }
+
+                        val currentUser = FirebaseAuth.getInstance().currentUser
+                        if (post.ownerId == currentUser?.uid) {
+                            binding.fabEditPost.visibility = View.VISIBLE
+                            binding.fabEditPost.setOnClickListener {
+                                val action = PostDetailsFragmentDirections.actionPostDetailsFragmentToPostEditorFragment(post.id)
+                                findNavController().navigate(action)
+                            }
+                        } else {
+                            binding.fabEditPost.visibility = View.GONE
                         }
                     }
                 }

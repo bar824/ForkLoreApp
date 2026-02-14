@@ -58,6 +58,9 @@
         <action
             android:id="@+id/action_feedFragment_to_postDetailsFragment"
             app:destination="@id/postDetailsFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_postEditorFragment"
+            app:destination="@id/postEditorFragment" />
     </fragment>
 
     <fragment
@@ -96,6 +99,9 @@
         <action
             android:id="@+id/action_profileFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_myPostsFragment"
+            app:destination="@id/myPostsFragment" />
     </fragment>
 
     <fragment
@@ -112,6 +118,9 @@
         <argument
             android:name="postId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_postDetailsFragment_to_postEditorFragment"
+            app:destination="@id/postEditorFragment" />
     </fragment>
 
     <fragment
@@ -145,6 +154,15 @@
         <action
             android:id="@+id/action_discoverFragment_to_externalDetailsFragment"
             app:destination="@id/externalDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/myPostsFragment"
+        android:name="com.example.forklore.ui.myrecipes.MyPostsFragment"
+        android:label="MyPostsFragment" >
+        <action
+            android:id="@+id/action_myPostsFragment_to_postDetailsFragment"
+            app:destination="@id/postDetailsFragment" />
     </fragment>
 
 </navigation>
