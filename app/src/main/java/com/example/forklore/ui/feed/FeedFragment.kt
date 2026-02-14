@@ -35,6 +35,7 @@ class FeedFragment : BaseAuthFragment() {
 
         setupRecyclerView()
 
+
         viewModel.posts.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {

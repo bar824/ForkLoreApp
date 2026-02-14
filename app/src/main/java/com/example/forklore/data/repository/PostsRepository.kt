@@ -14,12 +14,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.util.UUID
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+
 
 class PostsRepository(context: Context) {
 
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
     private val storage = FirebaseStorage.getInstance()
+    private val cacheScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
 
     private val postsDao = DbProvider.getDb(context).postsDao()
     private val imageCacheManager = ImageCacheManager(context, postsDao)
@@ -59,14 +65,17 @@ class PostsRepository(context: Context) {
                 }
                 postsDao.insertPosts(remotePosts)
             }
-
-            // Cache תמונות מקומית (Room שומר localImagePath)
-            remotePosts.forEach { post ->
-                val url = post.imageUrl
-                if (post.localImagePath == null && !url.isNullOrBlank()) {
-                    imageCacheManager.cacheImage(post.id, url)
+            // Cache images in background - DO NOT block feed loading
+            cacheScope.launch {
+                remotePosts.forEach { post ->
+                    val url = post.imageUrl
+                    if (post.localImagePath == null && !url.isNullOrBlank()) {
+                        imageCacheManager.cacheImage(post.id, url)
+                    }
                 }
             }
+
+
 
             Resource.Success(remotePosts)
         } catch (e: Exception) {
