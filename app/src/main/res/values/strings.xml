@@ -50,20 +50,9 @@
     <string name="profile_bio_placeholder">Add your bio here</string>
     <string name="stat_posts">0</string>
     <string name="stat_posts_label">Posts</string>
-    <string name="stat_followers">0</string>
-    <string name="stat_followers_label">Followers</string>
-    <string name="stat_following">0</string>
-    <string name="stat_following_label">Following</string>
-    <string name="tab_posts">POSTS</string>
-    <string name="profile_empty">No posts yet. Start sharing your recipes!</string>
 
     <!-- Discover Screen -->
-    <string name="refresh">Refresh</string>
     <string name="discover_curated">Curated for You ✨</string>
     <string name="discover_empty">No recipes available. Try again later!</string>
     <string name="discover_search_hint">Search by recipe name or tags</string>
 </resources>
-
-
-
-

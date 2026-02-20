@@ -31,16 +31,13 @@ class ExternalDetailsFragment : BaseAuthFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Setup toolbar with back navigation
         setupToolbarNavigation(binding.toolbar)
 
         viewModel.getRecipeDetails(args.recipeId)
 
         viewModel.recipe.observe(viewLifecycleOwner) { resource ->
             when (resource) {
-                is Resource.Loading -> {
-                    // Show progress
-                }
+                is Resource.Loading -> Unit
                 is Resource.Success -> {
                     resource.data?.let { recipe ->
                         binding.recipeName.text = recipe.name
