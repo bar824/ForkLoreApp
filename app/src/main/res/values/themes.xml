@@ -11,11 +11,15 @@
 
         <item name="colorSurface">@color/color_surface</item>
         <item name="colorOnSurface">@color/color_on_surface</item>
+        <item name="colorSurfaceVariant">@color/color_surface_variant</item>
 
         <item name="colorOutline">@color/color_outline</item>
 
-        <item name="android:statusBarColor">@color/color_background</item>
-        <item name="android:navigationBarColor">@color/color_background</item>
+        <item name="android:statusBarColor">@color/color_surface</item>
+        <item name="android:navigationBarColor">@color/color_surface</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="materialCardViewStyle">@style/Widget.ForkLore.Card.Flat</item>
     </style>
 
     <style name="Theme.ForkLore" parent="Base.Theme.ForkLore" />
@@ -27,5 +31,12 @@
     <style name="ShapeAppearanceOverlay.App.TopCorners" parent="">
         <item name="cornerSizeTopLeft">16dp</item>
         <item name="cornerSizeTopRight">16dp</item>
+    </style>
+
+    <style name="Widget.ForkLore.Card.Flat" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardElevation">0dp</item>
+        <item name="cardCornerRadius">0dp</item>
+        <item name="strokeColor">@color/color_outline</item>
+        <item name="strokeWidth">1dp</item>
     </style>
 </resources>
