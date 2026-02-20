@@ -17,6 +17,7 @@ data class Post(
     var localImagePath: String? = null,
     val tags: List<String> = emptyList(),
     val searchableKeywords: List<String> = emptyList(),
+    val likedBy: Map<String, String> = emptyMap(),
     val likesCount: Long = 0,
     val commentsCount: Long = 0,
     val createdAt: Long = 0L

@@ -34,30 +34,24 @@ class FeedFragment : BaseAuthFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // The adapter is now set up inside the user observer
-
         binding.fabAddPost.setOnClickListener {
             val action = FeedFragmentDirections.actionFeedFragmentToPostEditorFragment(null)
             findNavController().navigate(action)
         }
 
         viewModel.user.observe(viewLifecycleOwner) { user ->
-            // Setup RecyclerView and Adapter once we have the user data
             if (!::feedAdapter.isInitialized) {
                 setupRecyclerView(user)
             }
-            // When user data changes (e.g., a post is saved), resubmit the list to update the icons
+            feedAdapter.updateCurrentUser(user)
             feedAdapter.submitList(viewModel.posts.value?.data)
         }
 
         viewModel.posts.observe(viewLifecycleOwner) { resource ->
             when (resource) {
-                is Resource.Loading -> {
-                    binding.progressIndicator.visibility = View.VISIBLE
-                }
+                is Resource.Loading -> binding.progressIndicator.visibility = View.VISIBLE
                 is Resource.Success -> {
                     binding.progressIndicator.visibility = View.GONE
-                    // Check if adapter is initialized before submitting
                     if (::feedAdapter.isInitialized) {
                         feedAdapter.submitList(resource.data)
                     }
@@ -76,11 +70,11 @@ class FeedFragment : BaseAuthFragment() {
                 val action = FeedFragmentDirections.actionFeedFragmentToPostDetailsFragment(it.id)
                 findNavController().navigate(action)
             },
-            onSaveClicked = {
-                viewModel.toggleSaveStatus(it)
-            },
-            currentUser = currentUser
+            onSaveClicked = { viewModel.toggleSaveStatus(it) },
+            onLikeClicked = { viewModel.toggleLike(it) }
         )
+        feedAdapter.updateCurrentUser(currentUser)
+
         binding.recyclerView.apply {
             adapter = feedAdapter
             val linearLayoutManager = LinearLayoutManager(requireContext())

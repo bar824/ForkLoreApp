@@ -61,6 +61,7 @@
     <string name="refresh">Refresh</string>
     <string name="discover_curated">Curated for You ✨</string>
     <string name="discover_empty">No recipes available. Try again later!</string>
+    <string name="discover_search_hint">Search by recipe name or tags</string>
 </resources>
 
 

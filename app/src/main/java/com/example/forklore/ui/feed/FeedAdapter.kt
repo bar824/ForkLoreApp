@@ -3,6 +3,7 @@ package com.example.forklore.ui.feed
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -17,8 +18,15 @@ import java.io.File
 class FeedAdapter(
     private val onPostClicked: (Post) -> Unit,
     private val onSaveClicked: (String) -> Unit,
-    private val currentUser: User?
+    private val onLikeClicked: (String) -> Unit
 ) : ListAdapter<Post, FeedAdapter.PostViewHolder>(PostDiffCallback()) {
+
+    private var currentUser: User? = null
+
+    fun updateCurrentUser(user: User?) {
+        currentUser = user
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding = ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -33,17 +41,10 @@ class FeedAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(post: Post) {
-            // Title
-            binding.postTitle.text = post.title.orEmpty()
+            binding.postTitle.text = post.title
+            binding.authorName.text = post.ownerName.ifBlank { "Anonymous" }
+            binding.postStory.text = post.story
 
-            // Author
-            binding.authorName.text = post.ownerName?.takeIf { it.isNotBlank() } ?: "Anonymous"
-
-            // Story preview (if exists in Post model)
-            binding.postStory.text = post.story?.takeIf { it.isNotBlank() } ?: ""
-
-            // Time (if you have createdAt in Post)
-            // If your Post.createdAt is Long:
             val createdAt = post.createdAt
             binding.postTime.text = if (createdAt > 0) {
                 DateUtils.getRelativeTimeSpanString(createdAt).toString()
@@ -51,21 +52,15 @@ class FeedAdapter(
                 ""
             }
 
-            // Image (local cache first)
             val localPath = post.localImagePath
             if (!localPath.isNullOrBlank()) {
-                Glide.with(binding.root.context)
-                    .load(File(localPath))
-                    .into(binding.postImage)
+                Glide.with(binding.root.context).load(File(localPath)).into(binding.postImage)
             } else {
-                Glide.with(binding.root.context)
-                    .load(post.imageUrl)
-                    .into(binding.postImage)
+                Glide.with(binding.root.context).load(post.imageUrl).into(binding.postImage)
             }
 
-            // Tags -> Chips
             binding.tagsGroup.removeAllViews()
-            post.tags?.take(4)?.forEach { tag ->
+            post.tags.take(4).forEach { tag ->
                 val chip = Chip(binding.root.context).apply {
                     text = "#$tag"
                     isClickable = false
@@ -74,15 +69,19 @@ class FeedAdapter(
                 binding.tagsGroup.addView(chip)
             }
 
-            // Save button
-            val isSaved = currentUser?.savedPosts?.contains(post.id) == true
+            val user = currentUser
+            val isSaved = user?.savedPosts?.contains(post.id) == true
             val saveIcon = if (isSaved) R.drawable.ic_bookmark else R.drawable.ic_bookmark_border
             binding.savePostButton.setImageResource(saveIcon)
-            binding.savePostButton.setOnClickListener {
-                onSaveClicked(post.id)
-            }
 
-            // Click
+            val currentUserId = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid
+            val userLiked = currentUserId?.let { post.likedBy.containsKey(it) } == true
+            val likeColor = if (userLiked) R.color.fl_coral else android.R.color.darker_gray
+            binding.likePostButton.setColorFilter(ContextCompat.getColor(binding.root.context, likeColor))
+            binding.likesCount.text = post.likesCount.toString()
+
+            binding.savePostButton.setOnClickListener { onSaveClicked(post.id) }
+            binding.likePostButton.setOnClickListener { onLikeClicked(post.id) }
             binding.root.setOnClickListener { onPostClicked(post) }
         }
     }

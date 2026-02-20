@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,13 +40,15 @@ class DiscoverFragment : BaseAuthFragment() {
             findNavController().navigate(action)
         }
 
-        // Recycler (matches: @+id/recycler_view_articles)
         binding.recyclerViewArticles.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewArticles.adapter = adapter
 
+        binding.discoverSearchInput.addTextChangedListener {
+            viewModel.onQueryChanged(it?.toString().orEmpty())
+        }
+
         binding.refreshIcon.setOnClickListener {
-            // TODO: hook refresh action to ViewModel (e.g., viewModel.searchRecipes(...) or viewModel.loadCurated())
-            Toast.makeText(requireContext(), "Refresh clicked", Toast.LENGTH_SHORT).show()
+            viewModel.searchRecipes(binding.discoverSearchInput.text?.toString().orEmpty())
         }
 
         viewModel.recipes.observe(viewLifecycleOwner) { res ->
@@ -57,7 +60,6 @@ class DiscoverFragment : BaseAuthFragment() {
                     binding.emptyStateText.isVisible = list.isEmpty()
                     adapter.submitList(list)
                 }
-
                 is Resource.Error -> {
                     binding.emptyStateText.isVisible = true
                     adapter.submitList(emptyList())
@@ -67,7 +69,6 @@ class DiscoverFragment : BaseAuthFragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-
                 is Resource.Loading -> Unit
             }
         }

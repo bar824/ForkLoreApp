@@ -27,16 +27,6 @@
             app:title="@string/app_name"
             app:titleTextAppearance="@style/TextAppearance.ForkLore.Title">
 
-            <ImageView
-                android:id="@+id/search_icon"
-                android:layout_width="@dimen/icon_size_md"
-                android:layout_height="@dimen/icon_size_md"
-                android:src="@drawable/ic_search"
-                android:contentDescription="@string/search"
-                android:tint="@color/fl_coral"
-                android:layout_gravity="end"
-                android:layout_marginEnd="@dimen/spacing_lg"
-                tools:ignore="UseAppTint" />
         </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -90,4 +80,3 @@
         android:layout_margin="@dimen/spacing_xl" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
