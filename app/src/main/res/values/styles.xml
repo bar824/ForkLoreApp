@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Typography Styles -->
+    <style name="TextAppearance.ForkLore.Headline" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:textColor">@color/fl_text</item>
+        <item name="android:textSize">@dimen/text_headline</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.ForkLore.Title" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">@color/fl_text</item>
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.ForkLore.TitleSmall" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">@color/fl_text</item>
+        <item name="android:textSize">@dimen/text_title_sm</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.ForkLore.Body" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">@color/fl_text</item>
+        <item name="android:textSize">@dimen/text_body</item>
+    </style>
+
+    <style name="TextAppearance.ForkLore.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textColor">@color/fl_text_muted</item>
+        <item name="android:textSize">@dimen/text_body_sm</item>
+    </style>
+
+    <style name="TextAppearance.ForkLore.Caption" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textColor">@color/fl_text_muted</item>
+        <item name="android:textSize">@dimen/text_caption</item>
+    </style>
+
+    <!-- Card Styles -->
+    <style name="Widget.ForkLore.Card.Elevated" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">@dimen/radius_xl</item>
+        <item name="cardElevation">@dimen/elevation_md</item>
+    </style>
+
+    <style name="Widget.ForkLore.Card.Flat" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">@dimen/radius_xl</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeColor">@color/color_outline</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <!-- Buttons -->
+    <style name="Widget.ForkLore.Button.Filled" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">@dimen/radius_lg</item>
+        <item name="android:minHeight">52dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="backgroundTint">@color/fl_coral</item>
+        <item name="android:textColor">@color/fl_surface</item>
+        <item name="rippleColor">@color/fl_surface</item>
+    </style>
+
+    <style name="Widget.ForkLore.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="cornerRadius">@dimen/radius_lg</item>
+        <item name="android:minHeight">52dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">bold</item>
+        <item name="strokeColor">@color/fl_coral</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="android:textColor">@color/fl_coral</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+
+    <!-- TextInputLayout -->
+    <style name="Widget.ForkLore.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">@dimen/radius_md</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/radius_md</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/radius_md</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/radius_md</item>
+
+        <item name="boxStrokeColor">@color/fl_stroke</item>
+        <item name="boxBackgroundColor">@color/fl_surface</item>
+        <item name="hintTextColor">@color/fl_text_muted</item>
+    </style>
+
+    <!-- Chip Style -->
+    <style name="Widget.ForkLore.Chip" parent="Widget.MaterialComponents.Chip.Entry">
+        <item name="chipCornerRadius">@dimen/radius_lg</item>
+        <item name="chipBackgroundColor">@color/fl_coral</item>
+        <item name="android:textColor">@color/fl_surface</item>
+        <item name="android:textSize">@dimen/text_body_sm</item>
+    </style>
+
+    <!-- Shape Overlays -->
+    <style name="ShapeAppearanceOverlay.App.Corner.Full" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.App.TopCorners" parent="">
+        <item name="cornerSizeTopLeft">@dimen/radius_xl</item>
+        <item name="cornerSizeTopRight">@dimen/radius_xl</item>
+    </style>
+
+</resources>
