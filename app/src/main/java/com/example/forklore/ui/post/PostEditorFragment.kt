@@ -49,6 +49,9 @@ class PostEditorFragment : BaseAuthFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Setup toolbar with back navigation
+        setupToolbarNavigation(binding.toolbar)
+
         args.postId?.let {
             viewModel.getPost(it)
         }

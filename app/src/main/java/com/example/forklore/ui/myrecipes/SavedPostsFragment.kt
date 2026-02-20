@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.forklore.databinding.FragmentSavedPostsBinding
+import com.example.forklore.ui.BaseAuthFragment
 import com.example.forklore.utils.Resource
 
-class SavedPostsFragment : Fragment() {
+class SavedPostsFragment : BaseAuthFragment() {
 
     private var _binding: FragmentSavedPostsBinding? = null
     private val binding get() = _binding!!
@@ -31,6 +31,9 @@ class SavedPostsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Setup toolbar with back navigation
+        setupToolbarNavigation(binding.toolbar)
 
         setupRecyclerView()
 

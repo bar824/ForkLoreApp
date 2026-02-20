@@ -2,64 +2,78 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/fl_bg"
+    tools:context=".ui.discover.DiscoverFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/fl_surface"
+        app:elevation="0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:title="@string/discover" />
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/fl_surface"
+            android:paddingStart="@dimen/spacing_lg"
+            android:paddingEnd="@dimen/spacing_lg"
+            app:elevation="0dp"
+            app:title="@string/discover"
+            app:titleTextAppearance="@style/TextAppearance.ForkLore.Title">
+
+            <ImageView
+                android:id="@+id/refresh_icon"
+                android:layout_width="@dimen/icon_size_md"
+                android:layout_height="@dimen/icon_size_md"
+                android:src="@drawable/ic_refresh"
+                android:contentDescription="@string/refresh"
+                android:tint="@color/fl_coral"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/spacing_lg" />
+        </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:padding="16dp">
+        android:fillViewport="true"
+        android:padding="@dimen/spacing_lg">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+            <!-- Curated For You Section -->
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Search recipes from the web">
+                android:text="@string/discover_curated"
+                android:textAppearance="@style/TextAppearance.ForkLore.Title"
+                android:layout_marginBottom="@dimen/spacing_md" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/search_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/search_button"
+            <!-- Articles RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_articles"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Search" />
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginBottom="@dimen/spacing_xxl" />
 
+            <!-- Empty State -->
             <TextView
                 android:id="@+id/empty_state_text"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="No results yet. Try searching for pasta, chicken, salad..."
-                android:visibility="visible" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp" />
-
+                android:text="@string/discover_empty"
+                android:textAppearance="@style/TextAppearance.ForkLore.BodySmall"
+                android:visibility="gone"
+                android:layout_gravity="center" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -69,10 +83,6 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

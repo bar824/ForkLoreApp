@@ -39,16 +39,13 @@ class DiscoverFragment : BaseAuthFragment() {
             findNavController().navigate(action)
         }
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = adapter
+        // Recycler (matches: @+id/recycler_view_articles)
+        binding.recyclerViewArticles.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewArticles.adapter = adapter
 
-        binding.searchButton.setOnClickListener {
-            val q = binding.searchEditText.text?.toString().orEmpty().trim()
-            if (q.isBlank()) {
-                Toast.makeText(requireContext(), "Type something to search", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            viewModel.searchRecipes(q)
+        binding.refreshIcon.setOnClickListener {
+            // TODO: hook refresh action to ViewModel (e.g., viewModel.searchRecipes(...) or viewModel.loadCurated())
+            Toast.makeText(requireContext(), "Refresh clicked", Toast.LENGTH_SHORT).show()
         }
 
         viewModel.recipes.observe(viewLifecycleOwner) { res ->
@@ -60,11 +57,17 @@ class DiscoverFragment : BaseAuthFragment() {
                     binding.emptyStateText.isVisible = list.isEmpty()
                     adapter.submitList(list)
                 }
+
                 is Resource.Error -> {
                     binding.emptyStateText.isVisible = true
                     adapter.submitList(emptyList())
-                    Toast.makeText(requireContext(), res.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        res.message ?: "Failed to load results",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
+
                 is Resource.Loading -> Unit
             }
         }

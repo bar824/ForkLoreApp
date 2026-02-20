@@ -3,19 +3,33 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/fl_bg">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/fl_bg"
+        app:elevation="0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/profile_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:title="Profile"
-            app:titleCentered="true"/>
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/fl_bg"
+            app:elevation="0dp">
 
+            <!-- Settings Icon on Right -->
+            <ImageView
+                android:id="@+id/settings_icon"
+                android:layout_width="@dimen/icon_size_md"
+                android:layout_height="@dimen/icon_size_md"
+                android:src="@drawable/ic_settings"
+                android:contentDescription="@string/settings"
+                android:tint="@color/fl_coral"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/spacing_lg" />
+        </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -23,85 +37,76 @@
         android:layout_height="match_parent"
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:padding="16dp">
+        android:padding="@dimen/spacing_lg">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Header card -->
+            <!-- Profile Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="3dp"
-                android:layout_marginBottom="14dp">
+                app:cardCornerRadius="@dimen/radius_xl"
+                app:cardElevation="@dimen/elevation_md"
+                android:layout_marginBottom="@dimen/spacing_lg">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_lg"
+                    android:gravity="center_horizontal">
 
+                    <!-- Avatar -->
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/profile_image"
+                        android:layout_width="@dimen/avatar_size"
+                        android:layout_height="@dimen/avatar_size"
+                        android:contentDescription="@string/profile_picture"
+                        android:src="@android:drawable/sym_def_app_icon"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Corner.Full"
+                        android:layout_marginBottom="@dimen/spacing_lg" />
+
+                    <!-- Username Handle -->
+                    <TextView
+                        android:id="@+id/profile_handle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_handle_placeholder"
+                        android:textAppearance="@style/TextAppearance.ForkLore.BodySmall" />
+
+                    <!-- Name -->
+                    <TextView
+                        android:id="@+id/profile_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_name_placeholder"
+                        android:textAppearance="@style/TextAppearance.ForkLore.Title"
+                        android:layout_marginTop="@dimen/spacing_sm" />
+
+                    <!-- Bio -->
+                    <TextView
+                        android:id="@+id/profile_bio"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_bio_placeholder"
+                        android:textAppearance="@style/TextAppearance.ForkLore.BodySmall"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/spacing_sm"
+                        android:layout_marginStart="@dimen/spacing_lg"
+                        android:layout_marginEnd="@dimen/spacing_lg" />
+
+                    <!-- Stats Row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/spacing_lg">
 
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/profile_image"
-                            android:layout_width="72dp"
-                            android:layout_height="72dp"
-                            android:contentDescription="Profile Image"
-                            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Corner.Full"
-                            android:src="@android:drawable/sym_def_app_icon"/>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:layout_marginStart="14dp">
-
-                            <TextView
-                                android:id="@+id/profile_name"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Your Name"
-                                android:textStyle="bold"
-                                android:textSize="20sp"/>
-
-                            <TextView
-                                android:id="@+id/profile_email"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="email@example.com"
-                                android:textSize="14sp"/>
-                        </LinearLayout>
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/edit_profile_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Edit"
-                            app:cornerRadius="14dp"
-                            style="?attr/materialButtonOutlinedStyle"/>
-                    </LinearLayout>
-
-                    <com.google.android.material.divider.MaterialDivider
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
-                        android:layout_marginBottom="14dp"/>
-
-                    <!-- Stats -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
+                        <!-- Posts Stat -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -113,17 +118,19 @@
                                 android:id="@+id/posts_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="0"
-                                android:textStyle="bold"
-                                android:textSize="20sp"/>
+                                android:text="@string/stat_posts"
+                                android:textAppearance="@style/TextAppearance.ForkLore.Title"
+                                android:textColor="@color/fl_coral" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Posts"
-                                android:textSize="12sp"/>
+                                android:text="@string/stat_posts_label"
+                                android:textAppearance="@style/TextAppearance.ForkLore.BodySmall"
+                                android:layout_marginTop="@dimen/spacing_xs" />
                         </LinearLayout>
 
+                        <!-- Followers Stat -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -132,72 +139,105 @@
                             android:gravity="center">
 
                             <TextView
-                                android:id="@+id/saved_count"
+                                android:id="@+id/followers_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="0"
-                                android:textStyle="bold"
-                                android:textSize="20sp"/>
+                                android:text="@string/stat_followers"
+                                android:textAppearance="@style/TextAppearance.ForkLore.Title"
+                                android:textColor="@color/fl_coral" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Saved"
-                                android:textSize="12sp"/>
+                                android:text="@string/stat_followers_label"
+                                android:textAppearance="@style/TextAppearance.ForkLore.BodySmall"
+                                android:layout_marginTop="@dimen/spacing_xs" />
+                        </LinearLayout>
+
+                        <!-- Following Stat -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/following_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/stat_following"
+                                android:textAppearance="@style/TextAppearance.ForkLore.Title"
+                                android:textColor="@color/fl_coral" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/stat_following_label"
+                                android:textAppearance="@style/TextAppearance.ForkLore.BodySmall"
+                                android:layout_marginTop="@dimen/spacing_xs" />
                         </LinearLayout>
                     </LinearLayout>
 
+                    <!-- Action Buttons -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/spacing_lg"
+                        android:gravity="center">
+
+                        <!-- Edit Profile Button -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/edit_profile_button"
+                            style="@style/Widget.ForkLore.Button.Outlined"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/edit_profile"
+                            android:textColor="@color/fl_coral"
+                            android:layout_marginEnd="@dimen/spacing_md" />
+
+                        <!-- My Recipes Button -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/my_recipes_button"
+                            style="@style/Widget.ForkLore.Button.Filled"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/my_recipes"
+                            android:textColor="@color/fl_surface"
+                            android:backgroundTint="@color/fl_blue" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Actions -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
+            <!-- Tabs Section (POSTS tab) -->
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="2dp">
+                android:text="@string/tab_posts"
+                android:textAppearance="@style/TextAppearance.ForkLore.TitleSmall"
+                android:layout_marginTop="@dimen/spacing_lg" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+            <!-- Posts RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_profile_posts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/spacing_md"
+                android:nestedScrollingEnabled="false" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/my_posts_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="My Posts"
-                        app:cornerRadius="16dp"/>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/saved_posts_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Saved Posts"
-                        app:cornerRadius="16dp"/>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/logout_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Logout"
-                        app:cornerRadius="16dp"
-                        style="?attr/materialButtonOutlinedStyle"/>
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
+            <TextView
+                android:id="@+id/text_view_empty_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/profile_empty"
+                android:textAppearance="@style/TextAppearance.ForkLore.BodySmall"
+                android:visibility="gone"
+                android:layout_gravity="center" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/profile_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        android:visibility="gone"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

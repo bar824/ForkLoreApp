@@ -1,15 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/fl_bg"
+    tools:context=".ui.splash.SplashFragment">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/spacing_xl">
+
+            <!-- Logo Icon -->
+            <ImageView
+                android:id="@+id/logo_icon"
+                android:layout_width="@dimen/avatar_size"
+                android:layout_height="@dimen/avatar_size"
+                android:src="@drawable/ic_sparkle"
+                android:contentDescription="@string/app_name"
+                android:tint="@color/fl_coral"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/spacing_xxl" />
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textAppearance="@style/TextAppearance.ForkLore.Headline"
+                android:textAlignment="center"
+                android:layout_marginTop="@dimen/spacing_lg"
+                app:layout_constraintTop_toBottomOf="@id/logo_icon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Subtitle -->
+            <TextView
+                android:id="@+id/subtitle_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/splash_subtitle"
+                android:textAppearance="@style/TextAppearance.ForkLore.BodySmall"
+                android:textAlignment="center"
+                android:layout_marginTop="@dimen/spacing_lg"
+                app:layout_constraintTop_toBottomOf="@id/title_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Benefits Section -->
+            <LinearLayout
+                android:id="@+id/benefits_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/spacing_xxl"
+                app:layout_constraintTop_toBottomOf="@id/subtitle_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- Benefit 1 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/spacing_lg">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_size_lg"
+                        android:layout_height="@dimen/icon_size_lg"
+                        android:src="@drawable/ic_heart"
+                        android:contentDescription="@null"
+                        android:tint="@color/fl_coral"
+                        android:layout_marginEnd="@dimen/spacing_lg" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/benefit_stories_title"
+                            android:textAppearance="@style/TextAppearance.ForkLore.TitleSmall" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/benefit_stories_subtitle"
+                            android:textAppearance="@style/TextAppearance.ForkLore.BodySmall"
+                            android:layout_marginTop="@dimen/spacing_xs" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Benefit 2 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/spacing_lg">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_size_lg"
+                        android:layout_height="@dimen/icon_size_lg"
+                        android:src="@drawable/ic_people"
+                        android:contentDescription="@null"
+                        android:tint="@color/fl_coral"
+                        android:layout_marginEnd="@dimen/spacing_lg" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/benefit_community_title"
+                            android:textAppearance="@style/TextAppearance.ForkLore.TitleSmall" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/benefit_community_subtitle"
+                            android:textAppearance="@style/TextAppearance.ForkLore.BodySmall"
+                            android:layout_marginTop="@dimen/spacing_xs" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Benefit 3 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_size_lg"
+                        android:layout_height="@dimen/icon_size_lg"
+                        android:src="@drawable/ic_sparkle"
+                        android:contentDescription="@null"
+                        android:tint="@color/fl_coral"
+                        android:layout_marginEnd="@dimen/spacing_lg" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/benefit_traditions_title"
+                            android:textAppearance="@style/TextAppearance.ForkLore.TitleSmall" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/benefit_traditions_subtitle"
+                            android:textAppearance="@style/TextAppearance.ForkLore.BodySmall"
+                            android:layout_marginTop="@dimen/spacing_xs" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Spacer -->
+            <Space
+                android:id="@+id/spacer"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:layout_constraintTop_toBottomOf="@id/benefits_layout"
+                app:layout_constraintBottom_toTopOf="@id/button_layout"
+                android:layout_marginTop="@dimen/spacing_xxl" />
+
+            <!-- Button Layout -->
+            <LinearLayout
+                android:id="@+id/button_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/spacing_xxl"
+                app:layout_constraintTop_toBottomOf="@id/benefits_layout"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- Get Started Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_get_started"
+                    style="@style/Widget.ForkLore.Button.Filled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/splash_get_started"
+                    android:textColor="@color/fl_surface"
+                    android:backgroundTint="@color/fl_coral"
+                    android:layout_marginBottom="@dimen/spacing_lg" />
+
+                <!-- Login Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_login"
+                    style="@style/Widget.ForkLore.Button.Outlined"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/splash_login"
+                    android:textColor="@color/fl_coral" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+

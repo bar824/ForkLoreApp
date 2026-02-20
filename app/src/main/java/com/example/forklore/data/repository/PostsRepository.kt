@@ -318,7 +318,7 @@ class PostsRepository(context: Context) {
         val tags = post.tags.map { it.lowercase() }
         val keywords = post.searchableKeywords.map { it.lowercase() }
 
-        return terms.sumOf { term ->
+        return terms.map { term ->
             when {
                 title.contains(term) -> 5
                 tags.any { it.contains(term) } -> 4
@@ -326,7 +326,7 @@ class PostsRepository(context: Context) {
                 story.contains(term) || ingredients.contains(term) || steps.contains(term) -> 2
                 else -> 0
             }
-        }
+        }.sum()
     }
 
     private fun resolveImageExtension(imageUri: Uri): String {

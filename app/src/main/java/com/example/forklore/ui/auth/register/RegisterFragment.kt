@@ -1,4 +1,3 @@
-
 package com.example.forklore.ui.auth.register
 
 import android.os.Bundle
@@ -33,35 +32,45 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.registerButton.setOnClickListener {
-            val name = binding.nameEditText.text.toString().trim()
-            val email = binding.emailEditText.text.toString().trim()
-            val password = binding.passwordEditText.text.toString().trim()
+        // Register
+        binding.btnCreateAccount.setOnClickListener {
+            val name = binding.fullNameInput.text?.toString()?.trim().orEmpty()
+            val email = binding.emailInput.text?.toString()?.trim().orEmpty()
+            val password = binding.passwordInput.text?.toString()?.trim().orEmpty()
+
             viewModel.register(name, email, password)
         }
 
-        binding.loginTextView.setOnClickListener {
+        // Go to login
+        binding.loginLink.setOnClickListener {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
 
+        // Observe register state
         viewModel.registerStatus.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
                     binding.progressIndicator.isVisible = true
-                    binding.registerButton.isEnabled = false
-                    binding.loginTextView.isEnabled = false
+                    binding.btnCreateAccount.isEnabled = false
+                    binding.loginLink.isEnabled = false
                 }
+
                 is Resource.Success -> {
                     binding.progressIndicator.isVisible = false
-                    binding.registerButton.isEnabled = true
-                    binding.loginTextView.isEnabled = true
+                    binding.btnCreateAccount.isEnabled = true
+                    binding.loginLink.isEnabled = true
                     findNavController().navigate(R.id.action_registerFragment_to_feedFragment)
                 }
+
                 is Resource.Error -> {
                     binding.progressIndicator.isVisible = false
-                    binding.registerButton.isEnabled = true
-                    binding.loginTextView.isEnabled = true
-                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
+                    binding.btnCreateAccount.isEnabled = true
+                    binding.loginLink.isEnabled = true
+                    Toast.makeText(
+                        requireContext(),
+                        resource.message ?: "Registration failed",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color_primary">#111111</color>
+    <!-- Backgrounds -->
+    <color name="fl_bg">#FAF3EE</color>
+    <color name="fl_surface">#FFFFFF</color>
+    <color name="fl_surface2">#FFF7F3</color>
+
+    <!-- Brand -->
+    <color name="fl_coral">#F17559</color>
+    <color name="fl_coral_dark">#E7644B</color>
+    <color name="fl_blue">#3B82F6</color>
+
+    <!-- Text -->
+    <color name="fl_text">#2B2623</color>
+    <color name="fl_text_muted">#8A7F79</color>
+
+    <!-- UI -->
+    <color name="fl_divider">#EEE3DD</color>
+    <color name="fl_stroke">#EADFD8</color>
+
+    <!-- Icons / States -->
+    <color name="fl_icon">#3A3532</color>
+    <color name="fl_icon_muted">#9A8F88</color>
+    <color name="fl_error">#D32F2F</color>
+
+    <!-- Material Theme Colors -->
+    <color name="color_primary">@color/fl_coral</color>
     <color name="color_on_primary">#FFFFFF</color>
-    <color name="color_secondary">#333333</color>
+    <color name="color_secondary">@color/fl_blue</color>
     <color name="color_on_secondary">#FFFFFF</color>
-    <color name="color_background">#FAFAFA</color>
-    <color name="color_on_background">#111111</color>
-    <color name="color_surface">#FFFFFF</color>
-    <color name="color_on_surface">#111111</color>
-    <color name="color_outline">#DBDBDB</color>
-    <color name="color_surface_variant">#EFEFEF</color>
+    <color name="color_background">@color/fl_bg</color>
+    <color name="color_on_background">@color/fl_text</color>
+    <color name="color_surface">@color/fl_surface</color>
+    <color name="color_on_surface">@color/fl_text</color>
+    <color name="color_surface_variant">@color/fl_surface2</color>
+    <color name="color_outline">@color/fl_stroke</color>
 </resources>

@@ -3,64 +3,91 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorBackground"
+    android:background="@color/fl_bg"
     tools:context=".ui.feed.FeedFragment">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/feed_toolbar"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorSurface"
-        android:elevation="0dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
+        android:background="@color/fl_surface"
+        app:elevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="ForkLore"
-        app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/feed_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/fl_surface"
+            android:paddingStart="@dimen/spacing_lg"
+            android:paddingEnd="@dimen/spacing_lg"
+            app:elevation="0dp"
+            app:title="@string/app_name"
+            app:titleTextAppearance="@style/TextAppearance.ForkLore.Title">
+
+            <ImageView
+                android:id="@+id/search_icon"
+                android:layout_width="@dimen/icon_size_md"
+                android:layout_height="@dimen/icon_size_md"
+                android:src="@drawable/ic_search"
+                android:contentDescription="@string/search"
+                android:tint="@color/fl_coral"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/spacing_lg"
+                tools:ignore="UseAppTint" />
+        </com.google.android.material.appbar.MaterialToolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:paddingTop="8dp"
-        android:paddingBottom="96dp"
+        android:paddingStart="@dimen/spacing_lg"
+        android:paddingEnd="@dimen/spacing_lg"
+        android:paddingTop="@dimen/spacing_md"
+        android:paddingBottom="@dimen/spacing_xxl"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/feed_toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/app_bar" />
 
     <TextView
         android:id="@+id/text_view_empty_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No recipes available yet. Be the first to post!"
+        android:text="@string/feed_empty"
+        android:textAppearance="@style/TextAppearance.ForkLore.Body"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/app_bar" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progress_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/app_bar" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:importantForAccessibility="no"
+        android:src="@drawable/ic_add"
+        android:contentDescription="@string/add_post"
+        android:backgroundTint="@color/fl_coral"
+        app:tint="@color/fl_surface"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_add" />
+        android:layout_margin="@dimen/spacing_xl" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

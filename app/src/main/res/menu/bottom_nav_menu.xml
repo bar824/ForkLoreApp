@@ -10,10 +10,6 @@
         android:icon="@drawable/ic_search"
         android:title="@string/discover" />
 
-    <item
-        android:id="@id/myRecipesFragment"
-        android:icon="@drawable/ic_my_recipes"
-        android:title="@string/my_recipes" />
 
     <item
         android:id="@id/profileFragment"

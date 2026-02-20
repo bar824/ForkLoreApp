@@ -7,16 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.forklore.R
 import com.example.forklore.databinding.FragmentEditProfileBinding
+import com.example.forklore.ui.BaseAuthFragment
 import com.example.forklore.utils.hideKeyboard
 import com.google.android.material.snackbar.Snackbar
 import androidx.navigation.navGraphViewModels
 
-class EditProfileFragment : Fragment() {
+class EditProfileFragment : BaseAuthFragment() {
 
     private var _binding: FragmentEditProfileBinding? = null
     private val binding get() = _binding!!
@@ -45,15 +45,15 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Setup toolbar with back navigation
+        setupToolbarNavigation(binding.toolbar)
+
         setupClickListeners()
         observeViewModel()
         setupTextWatchers()
     }
 
     private fun setupClickListeners() {
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
 
         binding.btnChangeImage.setOnClickListener {
             pickImage.launch("image/*")

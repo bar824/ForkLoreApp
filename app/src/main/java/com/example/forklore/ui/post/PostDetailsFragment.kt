@@ -36,9 +36,8 @@ class PostDetailsFragment : BaseAuthFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.backButton.setOnClickListener {
-            findNavController().popBackStack()
-        }
+        // Setup toolbar with back navigation
+        setupToolbarNavigation(binding.toolbar)
 
         viewModel.getPost(args.postId)
         viewModel.observeLikes(args.postId)

@@ -8,7 +8,6 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.forklore.R
 import com.example.forklore.databinding.FragmentSearchBinding
@@ -34,18 +33,11 @@ class SearchFragment : BaseAuthFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Setup toolbar with back navigation
+        setupToolbarNavigation(binding.searchToolbar)
+
         setupRecyclerView()
 
-        binding.searchToolbar.setNavigationOnClickListener {
-            findNavController().navigate(
-                R.id.feedFragment,
-                null,
-                navOptions {
-                    launchSingleTop = true
-                    popUpTo(R.id.feedFragment) { inclusive = false }
-                }
-            )
-        }
 
         binding.searchEditText.addTextChangedListener {
             binding.searchButton.visibility = if (it.isNullOrBlank()) View.GONE else View.VISIBLE

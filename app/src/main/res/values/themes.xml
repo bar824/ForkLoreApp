@@ -1,5 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="Base.Theme.ForkLore" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <!-- Colors -->
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorOnPrimary">@color/color_on_primary</item>
 
@@ -15,28 +19,19 @@
 
         <item name="colorOutline">@color/color_outline</item>
 
+        <!-- System bars -->
         <item name="android:statusBarColor">@color/color_surface</item>
         <item name="android:navigationBarColor">@color/color_surface</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
-        <item name="materialCardViewStyle">@style/Widget.ForkLore.Card.Flat</item>
+
+        <!-- Component defaults (defined in styles.xml) -->
+        <item name="materialCardViewStyle">@style/Widget.ForkLore.Card.Elevated</item>
+        <item name="materialButtonStyle">@style/Widget.ForkLore.Button.Filled</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.ForkLore.Button.Outlined</item>
+        <item name="textInputStyle">@style/Widget.ForkLore.TextInputLayout</item>
     </style>
 
     <style name="Theme.ForkLore" parent="Base.Theme.ForkLore" />
 
-    <style name="ShapeAppearanceOverlay.App.Corner.Full" parent="">
-        <item name="cornerSize">50%</item>
-    </style>
-
-    <style name="ShapeAppearanceOverlay.App.TopCorners" parent="">
-        <item name="cornerSizeTopLeft">16dp</item>
-        <item name="cornerSizeTopRight">16dp</item>
-    </style>
-
-    <style name="Widget.ForkLore.Card.Flat" parent="Widget.Material3.CardView.Elevated">
-        <item name="cardElevation">0dp</item>
-        <item name="cardCornerRadius">0dp</item>
-        <item name="strokeColor">@color/color_outline</item>
-        <item name="strokeWidth">1dp</item>
-    </style>
 </resources>
