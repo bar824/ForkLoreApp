@@ -1,4 +1,3 @@
-
 package com.example.forklore.ui.external
 
 import android.os.Bundle
@@ -53,11 +52,6 @@ class ExternalDetailsFragment : BaseAuthFragment() {
                     Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
                 }
             }
-        }
-
-        binding.saveRecipeFab.setOnClickListener {
-            viewModel.saveRecipe()
-            Toast.makeText(requireContext(), "Recipe saved!", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -47,8 +47,8 @@ class DiscoverFragment : BaseAuthFragment() {
             viewModel.onQueryChanged(it?.toString().orEmpty())
         }
 
-        binding.refreshIcon.setOnClickListener {
-            viewModel.searchRecipes(binding.discoverSearchInput.text?.toString().orEmpty())
+        binding.searchIcon.setOnClickListener {
+            binding.discoverSearchInput.requestFocus()
         }
 
         viewModel.recipes.observe(viewLifecycleOwner) { res ->

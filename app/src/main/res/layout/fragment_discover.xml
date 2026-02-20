@@ -26,13 +26,13 @@
             app:titleTextAppearance="@style/TextAppearance.ForkLore.Title">
 
             <ImageView
-                android:id="@+id/refresh_icon"
+                android:id="@+id/search_icon"
                 android:layout_width="@dimen/icon_size_md"
                 android:layout_height="@dimen/icon_size_md"
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/spacing_lg"
-                android:contentDescription="@string/refresh"
-                android:src="@drawable/ic_refresh"
+                android:contentDescription="@string/search"
+                android:src="@drawable/ic_search"
                 android:tint="@color/fl_coral" />
         </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
