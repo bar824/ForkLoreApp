@@ -18,13 +18,14 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     val searchResults: LiveData<List<Post>> = _searchResults
 
     fun search(query: String) {
-        if (query.isBlank()) {
+        val normalized = query.trim().lowercase()
+        if (normalized.isBlank()) {
             _searchResults.value = emptyList()
             return
         }
 
         viewModelScope.launch {
-            when (val resource = postsRepository.searchPosts(query)) {
+            when (val resource = postsRepository.searchPosts(normalized)) {
                 is Resource.Success -> {
                     _searchResults.postValue(resource.data!!)
                 }
