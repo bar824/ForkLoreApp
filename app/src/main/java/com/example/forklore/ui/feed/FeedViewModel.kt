@@ -10,6 +10,7 @@ import com.example.forklore.data.model.User
 import com.example.forklore.data.repository.AuthRepository
 import com.example.forklore.data.repository.PostsRepository
 import com.example.forklore.utils.Resource
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 class FeedViewModel(application: Application) : AndroidViewModel(application) {
@@ -49,13 +50,43 @@ class FeedViewModel(application: Application) : AndroidViewModel(application) {
     fun toggleSaveStatus(postId: String) {
         viewModelScope.launch {
             val isCurrentlySaved = _user.value?.savedPosts?.contains(postId) == true
-            val result = if (isCurrentlySaved) {
+            if (isCurrentlySaved) {
                 postsRepository.unsavePostById(postId)
             } else {
                 postsRepository.savePostById(postId)
             }
-            if (result is Resource.Success) {
-                // The user listener in AuthRepository will handle the update automatically
+        }
+    }
+
+    fun toggleLike(postId: String) {
+        val currentPosts = (_posts.value as? Resource.Success)?.data.orEmpty()
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val userName = _user.value?.displayName?.takeIf { it.isNotBlank() } ?: "Someone"
+        val postIndex = currentPosts.indexOfFirst { it.id == postId }
+        if (postIndex == -1) return
+
+        val originalPost = currentPosts[postIndex]
+        val alreadyLiked = originalPost.likedBy.containsKey(currentUserId)
+        val updatedLikedBy = originalPost.likedBy.toMutableMap().apply {
+            if (alreadyLiked) remove(currentUserId) else put(currentUserId, userName)
+        }
+        val updatedPost = originalPost.copy(
+            likedBy = updatedLikedBy,
+            likesCount = if (alreadyLiked) {
+                (originalPost.likesCount - 1).coerceAtLeast(0)
+            } else {
+                originalPost.likesCount + 1
+            }
+        )
+
+        val updatedList = currentPosts.toMutableList().apply { set(postIndex, updatedPost) }
+        _posts.value = Resource.Success(updatedList)
+
+        viewModelScope.launch {
+            val result = postsRepository.toggleLike(postId)
+            if (result is Resource.Error) {
+                val revertedList = updatedList.toMutableList().apply { set(postIndex, originalPost) }
+                _posts.postValue(Resource.Success(revertedList))
             }
         }
     }
@@ -88,12 +119,8 @@ class FeedViewModel(application: Application) : AndroidViewModel(application) {
                     val merged = postsRepository.getCachedFeedPosts()
                     _posts.postValue(Resource.Success(merged))
                 }
-                is Resource.Error -> {
-                    _posts.postValue(remote)
-                }
-                is Resource.Loading -> {
-                    _posts.postValue(Resource.Loading())
-                }
+                is Resource.Error -> _posts.postValue(remote)
+                is Resource.Loading -> _posts.postValue(Resource.Loading())
             }
 
             isLoading = false

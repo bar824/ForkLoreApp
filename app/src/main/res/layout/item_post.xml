@@ -16,7 +16,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Post image -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -25,8 +24,8 @@
                 android:id="@+id/post_image"
                 android:layout_width="match_parent"
                 android:layout_height="320dp"
-                android:scaleType="centerCrop"
                 android:contentDescription="Post image"
+                android:scaleType="centerCrop"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.TopCorners" />
 
         </FrameLayout>
@@ -40,12 +39,11 @@
             android:paddingEnd="12dp"
             android:paddingBottom="12dp">
 
-            <!-- Author row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/author_image"
@@ -59,8 +57,8 @@
                     android:id="@+id/author_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="10dp"
+                    android:layout_weight="1"
                     android:text="Author"
                     android:textColor="?attr/colorOnSurface"
                     android:textStyle="bold" />
@@ -80,6 +78,28 @@
                 android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/like_post_button"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Like post"
+                    android:src="@drawable/ic_heart"
+                    android:tint="?attr/colorOnSurface" />
+
+                <TextView
+                    android:id="@+id/likes_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="0"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
 
                 <ImageButton
                     android:id="@+id/save_post_button"
@@ -106,21 +126,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:maxLines="3"
                 android:ellipsize="end"
+                android:maxLines="3"
                 android:text="Short story preview..."
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="14sp" />
 
-            <!-- Tags -->
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/tags_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:singleLine="true"
                 app:chipSpacingHorizontal="8dp"
-                app:chipSpacingVertical="8dp" />
+                app:chipSpacingVertical="8dp"
+                app:singleLine="true" />
 
         </LinearLayout>
     </LinearLayout>

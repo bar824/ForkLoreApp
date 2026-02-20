@@ -2,9 +2,10 @@ package com.example.forklore.ui.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
@@ -17,8 +18,6 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-
-    // Scoped to nav graph (keep if it works in your project)
     private val viewModel: ProfileViewModel by navGraphViewModels(R.id.nav_graph)
 
     override fun onCreateView(
@@ -33,36 +32,32 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Settings icon (right side)
-        binding.settingsIcon.setOnClickListener {
-            // If you have SettingsFragment action, replace this
-            Toast.makeText(requireContext(), "Settings clicked", Toast.LENGTH_SHORT).show()
-        }
+        binding.settingsIcon.setOnClickListener { showSettingsMenu() }
 
-        // Edit profile
         binding.editProfileButton.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
         }
 
-        // My recipes / my posts
         binding.myRecipesButton.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_myPostsFragment)
         }
 
-        // RecyclerView (if you don’t have an adapter yet, it's OK to leave it empty)
-        binding.recyclerViewProfilePosts.layoutManager = LinearLayoutManager(requireContext())
-        // binding.recyclerViewProfilePosts.adapter = yourAdapter
+        binding.fabAddRecipe.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_postEditorFragment)
+        }
 
-        // User data
+        binding.recyclerViewProfilePosts.layoutManager = LinearLayoutManager(requireContext())
+
         viewModel.user.observe(viewLifecycleOwner) { user ->
             if (user == null) return@observe
 
             binding.profileName.text =
                 user.displayName ?: getString(R.string.profile_name_placeholder)
-
-            // In your XML you don’t have profileEmail, so we show email in handle
             binding.profileHandle.text =
                 user.email ?: getString(R.string.profile_handle_placeholder)
+            binding.profileBio.text = user.bio?.ifBlank {
+                getString(R.string.profile_bio_placeholder)
+            } ?: getString(R.string.profile_bio_placeholder)
 
             val photoUrl = user.photoUrl
             if (photoUrl != null) {
@@ -72,18 +67,26 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        // Posts count (recipes count)
         viewModel.recipeCount.observe(viewLifecycleOwner) { count ->
             binding.postsCount.text = (count ?: 0).toString()
         }
 
-        // Since you DON'T have followers/following LiveData yet,
-        // we just put placeholders (or 0)
-        binding.followersCount.text = "0"
-        binding.followingCount.text = "0"
-
-        // Empty state default (until you connect posts list)
         binding.textViewEmptyState.visibility = View.VISIBLE
+    }
+
+    private fun showSettingsMenu() {
+        val popupMenu = PopupMenu(requireContext(), binding.settingsIcon)
+        MenuInflater(requireContext()).inflate(R.menu.profile_menu, popupMenu.menu)
+        popupMenu.setOnMenuItemClickListener { item ->
+            if (item.itemId == R.id.logout) {
+                viewModel.logout()
+                findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+                true
+            } else {
+                false
+            }
+        }
+        popupMenu.show()
     }
 
     override fun onDestroyView() {

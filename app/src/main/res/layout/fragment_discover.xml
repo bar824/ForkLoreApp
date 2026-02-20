@@ -29,51 +29,65 @@
                 android:id="@+id/refresh_icon"
                 android:layout_width="@dimen/icon_size_md"
                 android:layout_height="@dimen/icon_size_md"
-                android:src="@drawable/ic_refresh"
-                android:contentDescription="@string/refresh"
-                android:tint="@color/fl_coral"
                 android:layout_gravity="end"
-                android:layout_marginEnd="@dimen/spacing_lg" />
+                android:layout_marginEnd="@dimen/spacing_lg"
+                android:contentDescription="@string/refresh"
+                android:src="@drawable/ic_refresh"
+                android:tint="@color/fl_coral" />
         </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:fillViewport="true"
-        android:padding="@dimen/spacing_lg">
+        android:padding="@dimen/spacing_lg"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Curated For You Section -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/discover_search_layout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_lg"
+                app:startIconDrawable="@drawable/ic_search">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/discover_search_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/discover_search_hint"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_md"
                 android:text="@string/discover_curated"
-                android:textAppearance="@style/TextAppearance.ForkLore.Title"
-                android:layout_marginBottom="@dimen/spacing_md" />
+                android:textAppearance="@style/TextAppearance.ForkLore.Title" />
 
-            <!-- Articles RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_articles"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:nestedScrollingEnabled="false"
-                android:layout_marginBottom="@dimen/spacing_xxl" />
+                android:layout_marginBottom="@dimen/spacing_xxl"
+                android:nestedScrollingEnabled="false" />
 
-            <!-- Empty State -->
             <TextView
                 android:id="@+id/empty_state_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="@string/discover_empty"
                 android:textAppearance="@style/TextAppearance.ForkLore.BodySmall"
-                android:visibility="gone"
-                android:layout_gravity="center" />
+                android:visibility="gone" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -81,8 +95,8 @@
         android:id="@+id/progress_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:indeterminate="true"
-        android:visibility="gone"
-        android:layout_gravity="center" />
+        android:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

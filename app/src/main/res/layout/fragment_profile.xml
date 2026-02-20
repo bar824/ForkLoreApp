@@ -19,16 +19,15 @@
             android:background="@color/fl_bg"
             app:elevation="0dp">
 
-            <!-- Settings Icon on Right -->
             <ImageView
                 android:id="@+id/settings_icon"
                 android:layout_width="@dimen/icon_size_md"
                 android:layout_height="@dimen/icon_size_md"
-                android:src="@drawable/ic_settings"
-                android:contentDescription="@string/settings"
-                android:tint="@color/fl_coral"
                 android:layout_gravity="end"
-                android:layout_marginEnd="@dimen/spacing_lg" />
+                android:layout_marginEnd="@dimen/spacing_lg"
+                android:contentDescription="@string/settings"
+                android:src="@drawable/ic_settings"
+                android:tint="@color/fl_coral" />
         </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -36,40 +35,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:padding="@dimen/spacing_lg">
+        android:padding="@dimen/spacing_lg"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Profile Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_lg"
                 app:cardCornerRadius="@dimen/radius_xl"
-                app:cardElevation="@dimen/elevation_md"
-                android:layout_marginBottom="@dimen/spacing_lg">
+                app:cardElevation="@dimen/elevation_md">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    android:padding="@dimen/spacing_lg"
-                    android:gravity="center_horizontal">
+                    android:padding="@dimen/spacing_lg">
 
-                    <!-- Avatar -->
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/profile_image"
                         android:layout_width="@dimen/avatar_size"
                         android:layout_height="@dimen/avatar_size"
+                        android:layout_marginBottom="@dimen/spacing_lg"
                         android:contentDescription="@string/profile_picture"
                         android:src="@android:drawable/sym_def_app_icon"
-                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Corner.Full"
-                        android:layout_marginBottom="@dimen/spacing_lg" />
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Corner.Full" />
 
-                    <!-- Username Handle -->
                     <TextView
                         android:id="@+id/profile_handle"
                         android:layout_width="wrap_content"
@@ -77,42 +73,38 @@
                         android:text="@string/profile_handle_placeholder"
                         android:textAppearance="@style/TextAppearance.ForkLore.BodySmall" />
 
-                    <!-- Name -->
                     <TextView
                         android:id="@+id/profile_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_sm"
                         android:text="@string/profile_name_placeholder"
-                        android:textAppearance="@style/TextAppearance.ForkLore.Title"
-                        android:layout_marginTop="@dimen/spacing_sm" />
+                        android:textAppearance="@style/TextAppearance.ForkLore.Title" />
 
-                    <!-- Bio -->
                     <TextView
                         android:id="@+id/profile_bio"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/profile_bio_placeholder"
-                        android:textAppearance="@style/TextAppearance.ForkLore.BodySmall"
-                        android:gravity="center"
-                        android:layout_marginTop="@dimen/spacing_sm"
                         android:layout_marginStart="@dimen/spacing_lg"
-                        android:layout_marginEnd="@dimen/spacing_lg" />
+                        android:layout_marginTop="@dimen/spacing_sm"
+                        android:layout_marginEnd="@dimen/spacing_lg"
+                        android:gravity="center"
+                        android:text="@string/profile_bio_placeholder"
+                        android:textAppearance="@style/TextAppearance.ForkLore.BodySmall" />
 
-                    <!-- Stats Row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/spacing_lg"
                         android:gravity="center"
-                        android:layout_marginTop="@dimen/spacing_lg">
+                        android:orientation="horizontal">
 
-                        <!-- Posts Stat -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/posts_count"
@@ -125,102 +117,49 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_xs"
                                 android:text="@string/stat_posts_label"
-                                android:textAppearance="@style/TextAppearance.ForkLore.BodySmall"
-                                android:layout_marginTop="@dimen/spacing_xs" />
-                        </LinearLayout>
-
-                        <!-- Followers Stat -->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center">
-
-                            <TextView
-                                android:id="@+id/followers_count"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/stat_followers"
-                                android:textAppearance="@style/TextAppearance.ForkLore.Title"
-                                android:textColor="@color/fl_coral" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/stat_followers_label"
-                                android:textAppearance="@style/TextAppearance.ForkLore.BodySmall"
-                                android:layout_marginTop="@dimen/spacing_xs" />
-                        </LinearLayout>
-
-                        <!-- Following Stat -->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center">
-
-                            <TextView
-                                android:id="@+id/following_count"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/stat_following"
-                                android:textAppearance="@style/TextAppearance.ForkLore.Title"
-                                android:textColor="@color/fl_coral" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/stat_following_label"
-                                android:textAppearance="@style/TextAppearance.ForkLore.BodySmall"
-                                android:layout_marginTop="@dimen/spacing_xs" />
+                                android:textAppearance="@style/TextAppearance.ForkLore.BodySmall" />
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Action Buttons -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginTop="@dimen/spacing_lg"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
-                        <!-- Edit Profile Button -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/edit_profile_button"
                             style="@style/Widget.ForkLore.Button.Outlined"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/spacing_md"
                             android:layout_weight="1"
                             android:text="@string/edit_profile"
-                            android:textColor="@color/fl_coral"
-                            android:layout_marginEnd="@dimen/spacing_md" />
+                            android:textColor="@color/fl_coral" />
 
-                        <!-- My Recipes Button -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/my_recipes_button"
                             style="@style/Widget.ForkLore.Button.Filled"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:backgroundTint="@color/fl_blue"
                             android:text="@string/my_recipes"
-                            android:textColor="@color/fl_surface"
-                            android:backgroundTint="@color/fl_blue" />
+                            android:textColor="@color/fl_surface" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Tabs Section (POSTS tab) -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_lg"
                 android:text="@string/tab_posts"
-                android:textAppearance="@style/TextAppearance.ForkLore.TitleSmall"
-                android:layout_marginTop="@dimen/spacing_lg" />
+                android:textAppearance="@style/TextAppearance.ForkLore.TitleSmall" />
 
-            <!-- Posts RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_profile_posts"
                 android:layout_width="match_parent"
@@ -232,12 +171,22 @@
                 android:id="@+id/text_view_empty_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="@string/profile_empty"
                 android:textAppearance="@style/TextAppearance.ForkLore.BodySmall"
-                android:visibility="gone"
-                android:layout_gravity="center" />
+                android:visibility="gone" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_recipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/spacing_xl"
+        android:contentDescription="@string/add_post"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="@color/fl_coral"
+        app:tint="@color/fl_surface" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

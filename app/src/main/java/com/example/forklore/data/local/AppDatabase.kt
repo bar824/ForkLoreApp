@@ -12,7 +12,7 @@ import com.example.forklore.data.model.ExternalRecipe
 import com.example.forklore.data.model.Post
 import com.example.forklore.data.model.Recipe
 
-@Database(entities = [Post::class, ExternalRecipe::class, Recipe::class], version = 5)
+@Database(entities = [Post::class, ExternalRecipe::class, Recipe::class], version = 6)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 

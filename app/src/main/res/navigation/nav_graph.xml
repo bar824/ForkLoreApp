@@ -109,6 +109,9 @@
         <action
             android:id="@+id/action_profileFragment_to_savedPostsFragment"
             app:destination="@id/savedPostsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_postEditorFragment"
+            app:destination="@id/postEditorFragment" />
     </fragment>
 
     <fragment
