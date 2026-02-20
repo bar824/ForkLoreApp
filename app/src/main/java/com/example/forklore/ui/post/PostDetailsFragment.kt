@@ -41,6 +41,7 @@ class PostDetailsFragment : BaseAuthFragment() {
         }
 
         viewModel.getPost(args.postId)
+        viewModel.observeLikes(args.postId)
 
         viewModel.post.observe(viewLifecycleOwner) { resource ->
             when (resource) {
@@ -50,6 +51,7 @@ class PostDetailsFragment : BaseAuthFragment() {
                 is Resource.Success -> {
                     binding.progressIndicator.isVisible = false
                     resource.data?.let { post ->
+                        binding.tagsChipGroup.removeAllViews()
                         binding.postTitle.text = post.title
                         binding.authorName.text = post.ownerName
                         binding.storyText.text = post.story
@@ -70,6 +72,10 @@ class PostDetailsFragment : BaseAuthFragment() {
                         }
 
                         val currentUser = FirebaseAuth.getInstance().currentUser
+                        binding.likeToggleButton.setOnClickListener {
+                            viewModel.toggleLike(post.id)
+                        }
+
                         if (post.ownerId == currentUser?.uid) {
                             binding.fabEditPost.visibility = View.VISIBLE
                             binding.fabEditPost.setOnClickListener {
@@ -78,6 +84,7 @@ class PostDetailsFragment : BaseAuthFragment() {
                             }
                         } else {
                             binding.fabEditPost.visibility = View.GONE
+                            binding.likedByText.isVisible = false
                         }
                     }
                 }
@@ -85,6 +92,36 @@ class PostDetailsFragment : BaseAuthFragment() {
                     binding.progressIndicator.isVisible = false
                     Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
                 }
+            }
+        }
+
+        viewModel.likeState.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    val state = resource.data ?: return@observe
+                    val currentUser = FirebaseAuth.getInstance().currentUser
+                    binding.likesCountText.text = "${state.likesCount} likes"
+                    binding.likeToggleButton.text = if (state.isLikedByCurrentUser) "Unlike" else "Like"
+
+                    val postOwnerId = (viewModel.post.value as? Resource.Success)?.data?.ownerId
+                    val isOwner = postOwnerId == currentUser?.uid
+                    if (isOwner && state.likedByNames.isNotEmpty()) {
+                        binding.likedByText.isVisible = true
+                        binding.likedByText.text = "Liked by: ${state.likedByNames.joinToString(", ")}"
+                    } else {
+                        binding.likedByText.isVisible = false
+                    }
+                }
+                is Resource.Error -> {
+                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
+                }
+                is Resource.Loading -> Unit
+            }
+        }
+
+        viewModel.likeActionStatus.observe(viewLifecycleOwner) { resource ->
+            if (resource is Resource.Error) {
+                Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
             }
         }
     }

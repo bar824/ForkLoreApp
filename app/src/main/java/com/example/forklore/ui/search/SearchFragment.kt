@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.forklore.databinding.FragmentSearchBinding
 import com.example.forklore.ui.BaseAuthFragment
@@ -65,7 +66,8 @@ class SearchFragment : BaseAuthFragment() {
 
     private fun setupRecyclerView() {
         searchAdapter = SearchAdapter { post ->
-            // Handle post click
+            val action = SearchFragmentDirections.actionSearchFragmentToPostDetailsFragment(post.id)
+            findNavController().navigate(action)
         }
         binding.searchResultsRecyclerView.apply {
             adapter = searchAdapter
