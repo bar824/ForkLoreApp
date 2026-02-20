@@ -9,7 +9,6 @@ import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.forklore.R
 import com.example.forklore.databinding.FragmentProfileBinding
@@ -46,8 +45,6 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.action_profileFragment_to_postEditorFragment)
         }
 
-        binding.recyclerViewProfilePosts.layoutManager = LinearLayoutManager(requireContext())
-
         viewModel.user.observe(viewLifecycleOwner) { user ->
             if (user == null) return@observe
 
@@ -71,7 +68,6 @@ class ProfileFragment : Fragment() {
             binding.postsCount.text = (count ?: 0).toString()
         }
 
-        binding.textViewEmptyState.visibility = View.VISIBLE
     }
 
     private fun showSettingsMenu() {

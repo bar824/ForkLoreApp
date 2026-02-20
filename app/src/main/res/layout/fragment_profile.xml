@@ -153,28 +153,6 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_lg"
-                android:text="@string/tab_posts"
-                android:textAppearance="@style/TextAppearance.ForkLore.TitleSmall" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_profile_posts"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/spacing_md"
-                android:nestedScrollingEnabled="false" />
-
-            <TextView
-                android:id="@+id/text_view_empty_state"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/profile_empty"
-                android:textAppearance="@style/TextAppearance.ForkLore.BodySmall"
-                android:visibility="gone" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
